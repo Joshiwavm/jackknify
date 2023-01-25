@@ -1,4 +1,4 @@
-from add_ons.Jack_Knife import *
+from Jack_it import *
 
 vis        = './data/Workable/HD1_Band6_tbin30s_cwidth30kms.ms' 
 spws       = [['25','27','29','31','57','58','59','60','85','86','87','88','113','114','115','116']]
