@@ -1,11 +1,10 @@
-import numpy as np
-import tqdm
-from casatasks import tclean, exportfits
 import os
+import tqdm
+import numpy as np
+from casatasks import tclean, exportfits
 
 ####### Own Tools #######
 from src.MsManager import *
-from src.UnitTransform import *
 
 class Jack:
     def __init__(self, vis, typ, N, spws, fields, band, test = False):
