@@ -5,7 +5,6 @@ import os
 
 ####### Own Tools #######
 from src.MsManager import *
-from src.Settings import *
 from src.UnitTransform import *
 
 class Jack:
