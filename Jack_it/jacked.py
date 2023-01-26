@@ -1,26 +1,11 @@
 import numpy as np
-
-from astropy.io import fits
-from astropy import constants as const
-from astropy import units as u
-from astropy.io import fits
-from astropy.wcs import WCS
-
-import casatools
-from casatasks import tclean, exportfits
-
 import tqdm
+from casatasks import tclean, exportfits
 
 ####### Own Tools #######
 from src.MsManager import *
 from src.Settings import *
 from src.UnitTransform import *
-
-Tcmb    = 2.7255
-mec2    = ((const.m_e*const.c*const.c).to(u.keV)).value
-clight  = const.c.value
-kboltz  = const.k_B.value
-hplanck = const.h.value
 
 class Jack:
     def __init__(self, vis, typ, N, spws, fields, band, test = False):
