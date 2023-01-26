@@ -1,8 +1,9 @@
 import shutil
 import os
+import astropy.constants as const
 
 import casatools
-from Config import * 
+from Settings import * 
 
 # The class for handeling ms files
 class MSmanager:
@@ -22,8 +23,6 @@ class MSmanager:
         self.band     = band
         self.obs_type = array
 
-
-
         self.binvis     = './output/{1}/output_{0}_{1}.ms.field-fid.spw-sid'.format(band,self.obs_type)
         self.ms_copydir = './output/{1}/model/'.format(band,self.obs_type)
         
@@ -32,28 +31,7 @@ class MSmanager:
         if not os.path.exists(self.manager.ms_copydir):
             os.makedirs(self.manager.ms_copydir)
         
-        self._set_imageparams()
-
-    def _set_imageparams(self):
-        if self.obs_type=='com07m':
-            self.imsize = 256
-            self.imcell = '1.50arcsec'
-        elif self.obs_type=='com12m':
-            self.imsize = 1024
-            self.imcell = '0.15arcsec'
-        elif self.obs_type=='ext12m':
-            self.imsize = 512
-            self.imcell = '0.10arcsec'
-                      
-        if typ =='com07m':
-            self.imsize = 256
-            self.imcell = '1.50arcsec'
-        elif typ =='com12m':
-            self.imsize = 256
-            self.imcell = '0.15arcsec'
-            
-        else:
-            raise print("Wrong array element")
+        self.imreader = Imparams(self.obs_type, self.band)
 
     def uvdata_loader(self):
 

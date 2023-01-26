@@ -33,7 +33,7 @@ class Jack:
                                     band = band, 
                                     array = array)    
     
-    
+
         self.manager.ms_modelfile = self.manager.ms_copydir + self.manager.ms_file.split('/')[-1]
         self.vis_jacked =  self.manager.ms_copydir + self.vis_name  
             
@@ -60,8 +60,7 @@ class Jack:
                                     (self.vis.split('/')[-1]).split('.ms')[0] + self.typ + '_Jacked_seed'+str(self.seed),
                                     self.wgt)
 
-    def _stw_manual(self):
-                
+    def _stw_manual(self):     
         bin_frac = 0.001
         bins = np.logspace(np.log10(np.nanmin(self.uvdist)), np.log10(np.nanmax(self.uvdist)), int(bin_frac*len(self.uvdist)))
         self.UVreal_binned = np.zeros(len(bins)-1)
