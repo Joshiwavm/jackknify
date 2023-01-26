@@ -4,7 +4,7 @@ import numpy as np
 from casatasks import tclean, exportfits
 
 ####### Own Tools #######
-from src.MsManager import *
+from MsManager import *
 
 class Jack:
     def __init__(self, vis, typ, N, spws, fields, band, test = False):
