@@ -1,6 +1,7 @@
 import numpy as np
 import tqdm
 from casatasks import tclean, exportfits
+import os
 
 ####### Own Tools #######
 from src.MsManager import *
@@ -14,17 +15,18 @@ class Jack:
         self.seed       = 42
         self.N          = N
         self.vis        = vis
-        self.vis_jacked = 'Model_'+ (vis.split('/')[-1]).split('.ms')[0] + typ + '_Jacked_seed'+str(self.seed)+'.ms'
+        self.vis_name = (vis.split('/')[-1]).split('.ms')[0] + typ + '_Jacked_seed'+str(self.seed)+'.ms'
                             
         self.typ        = typ
         self.reader     = MsReader(self.vis, self.typ, spws = spws, fields = fields, band = band)
-        
-        
-        #--- moved below from saver to here
-        self.reader.ms_copydir = './output/add_ons/'
+    
+        self.reader.ms_copydir = './output/jacked/'
+
+        if not os.path.exists(self.reader.ms_copydir):
+            os.makedirs(self.reader.ms_copydir)
+    
         self.reader.ms_modelfile = self.reader.ms_copydir + self.reader.ms_file.split('/')[-1]
-        
-        self.vis_jacked =  self.reader.ms_copydir + self.vis_jacked  
+        self.vis_jacked =  self.reader.ms_copydir + self.vis_name  
                 
         if typ =='com07m':
             self.imsize = 256
@@ -94,6 +96,32 @@ class Jack:
     
     def _deconvolve(self): #normal
 
+        # HD1 stuff
+        # --------------------
+        tclean(       vis     =   self.vis_jacked.replace('Model_', 'Model_0_'), 
+                  imagename   =       self.vis_jacked.replace('.ms','_cube.im'),  
+                  niter       =                                               0,
+                  # spw         =                                            '25',
+                  imsize      =                                     self.imsize, 
+                  cell        =                                     self.imcell, 
+                  gridder     =                                      'standard', 
+                  weighting   =                                       'natural', 
+                  specmode    =                                          'cube') 
+        
+        exportfits(self.vis_jacked.replace('.ms','_cube.im.image'), 
+                   self.vis_jacked.replace('.ms','_cube.im.fits'),
+                   overwrite=True)  
+
+        image_name = self.vis_jacked.replace('.ms','_cube.im.fits')
+
+        os.system('rm -rf {0}.pb'.format(self.vis_jacked.replace('.ms','_cube.im')))
+        os.system('rm -rf {0}.psf'.format(self.vis_jacked.replace('.ms','_cube.im')))
+        os.system('rm -rf {0}.model'.format(self.vis_jacked.replace('.ms','_cube.im')))
+        os.system('rm -rf {0}.sumwt'.format(self.vis_jacked.replace('.ms','_cube.im')))
+        os.system('rm -rf {0}.weight'.format(self.vis_jacked.replace('.ms','_cube.im')))
+        os.system('rm -rf {0}.residual'.format(self.vis_jacked.replace('.ms','_cube.im')))
+        os.system('rm -rf {0}.image'.format(self.vis_jacked.replace('.ms','_cube.im')))
+
         # Standard Stuff
         # ----------------------
         
@@ -110,8 +138,6 @@ class Jack:
                    fitsimage = self.vis_jacked.replace('.ms','.im.fits'), 
                    overwrite = True)
         
-        image_name = self.vis_jacked.replace('.ms','.im.fits')
-
         os.system('rm -rf {0}.pb'.format(self.vis_jacked.replace('.ms','.im')))
         os.system('rm -rf {0}.psf'.format(self.vis_jacked.replace('.ms','.im')))
         os.system('rm -rf {0}.model'.format(self.vis_jacked.replace('.ms','.im')))
