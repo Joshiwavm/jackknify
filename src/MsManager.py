@@ -1,13 +1,10 @@
-from src.Utillities import *
-
 from astropy.constants import c
 from astropy.io import fits
-import sys
 import shutil
 import os
 
 import casatools
-from casatasks import *
+from casatasks import tclean, exportfits
 
 class MsReader:
     def __init__(self, filename, obs_type, spws = [['0','1','2','3']], fields = ['0'], band = 'band3'): #quickfix hardcoded spws and fields etc.
