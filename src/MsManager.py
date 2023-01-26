@@ -1,28 +1,40 @@
-from astropy.constants import c
-from astropy.io import fits
 import shutil
 import os
 
 import casatools
-from casatasks import tclean, exportfits
+from Config import * 
 
-class MsReader:
-    def __init__(self, filename, obs_type, spws = [['0','1','2','3']], fields = ['0'], band = 'band3'): #quickfix hardcoded spws and fields etc.
+# The class for handeling ms files
+class MSmanager:
+    def __init__(   self, 
+                    filename_in,
+                    filename_out,
+                    spws, 
+                    fields,
+                    band,
+                    array
+                ):
       
-        self.ms_file  = filename
-        self.obs_type = obs_type
-        self.band     = band
-        self.fields   = fields
+        self.ms_file  = filename_in
+        self.ms_save  = filename_out
         self.spws     = spws
-        self._set_obs()
-        
+        self.fields   = fields
+        self.band     = band
+        self.obs_type = array
+
+
+
         self.binvis     = './output/{1}/output_{0}_{1}.ms.field-fid.spw-sid'.format(band,self.obs_type)
         self.ms_copydir = './output/{1}/model/'.format(band,self.obs_type)
-        self.timebin    = '0s'
         
         self.ms_modelfile = self.ms_copydir + self.ms_file.split('/')[-1]
+        
+        if not os.path.exists(self.manager.ms_copydir):
+            os.makedirs(self.manager.ms_copydir)
+        
+        self._set_imageparams()
 
-    def _set_obs(self):
+    def _set_imageparams(self):
         if self.obs_type=='com07m':
             self.imsize = 256
             self.imcell = '1.50arcsec'
@@ -32,7 +44,14 @@ class MsReader:
         elif self.obs_type=='ext12m':
             self.imsize = 512
             self.imcell = '0.10arcsec'
-
+                      
+        if typ =='com07m':
+            self.imsize = 256
+            self.imcell = '1.50arcsec'
+        elif typ =='com12m':
+            self.imsize = 256
+            self.imcell = '0.15arcsec'
+            
         else:
             raise print("Wrong array element")
 
@@ -89,26 +108,6 @@ class MsReader:
                 vs      = np.append(vs, v)
 
         return uvdist, UVreal, UVimag, uvwghts, us, vs
-    
-    def uvloader(self, spw, field):
-
-        ms=casatools.ms()
-        ms.open(self.ms_file)
-        ms.selectinit(reset=True)
-        ms.selectinit(datadescid=int(spw))
-        ms.select({'field_id': int(field)})
-
-        u = np.copy(ms.getdata(['u'])['u'])
-        v = np.copy(ms.getdata(['v'])['v'])
-        freqs  = ms.range('chan_freq')['chan_freq'][:,0]
-        ms.close()
-
-        uwave  = (freqs * u.reshape(-1,1)/const.c.value).flatten()
-        vwave  = (freqs * v.reshape(-1,1)/const.c.value).flatten()
-        uvfreq = (np.ones((len(u), len(freqs)))*freqs).flatten() 
-            
-        uvdata = np.array([uwave, vwave, uvfreq])
-        return uvdata        
     
     def model_to_ms(self, model, scale, todo, savename, sigma = None, iters = 0, mock = True):
         

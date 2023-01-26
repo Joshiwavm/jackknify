@@ -7,34 +7,38 @@ from casatasks import tclean, exportfits
 from MsManager import *
 
 class Jack:
-    def __init__(self, vis, typ, N, spws, fields, band, test = False):
+    def __init__(self, 
+                 vis, 
+                 spws, 
+                 fields, 
+                 band,
+                 array,
+                 samples, 
+                 test = False
+                 ):
         
+        # initialize variables
+        # --------------------
         self.test       = test 
         self.seed       = 42
-        self.N          = N
-        self.vis        = vis
-        self.vis_name = (vis.split('/')[-1]).split('.ms')[0] + typ + '_Jacked_seed'+str(self.seed)+'.ms'
-                            
-        self.typ        = typ
-        self.reader     = MsReader(self.vis, self.typ, spws = spws, fields = fields, band = band)
+        self.N          = samples
+        self.vis_input  = vis
+        self.vis_output = (vis.split('/')[-1]).split('.ms')[0] + '_Jacked_seed'+str(self.seed)+'.ms' 
+        
+        # initialie MS reader
+        self.manager    = MSmanager(self.vis_input, 
+                                    self.vis_output,
+                                    spws = spws, 
+                                    fields = fields, 
+                                    band = band, 
+                                    array = array)    
     
-        self.reader.ms_copydir = './output/jacked/'
-
-        if not os.path.exists(self.reader.ms_copydir):
-            os.makedirs(self.reader.ms_copydir)
     
-        self.reader.ms_modelfile = self.reader.ms_copydir + self.reader.ms_file.split('/')[-1]
-        self.vis_jacked =  self.reader.ms_copydir + self.vis_name  
-                
-        if typ =='com07m':
-            self.imsize = 256
-            self.imcell = '1.50arcsec'
-        elif typ =='com12m':
-            self.imsize = 256
-            self.imcell = '0.15arcsec'
+        self.manager.ms_modelfile = self.manager.ms_copydir + self.manager.ms_file.split('/')[-1]
+        self.vis_jacked =  self.manager.ms_copydir + self.vis_name  
             
     def _loader(self):
-        uvdist, UVreal, UVimag, UVwgts, _, _ = self.reader.uvdata_loader()
+        uvdist, UVreal, UVimag, UVwgts, _, _ = self.manager.uvdata_loader()
 
         self.UVreal = UVreal
         self.UVimag = UVimag
@@ -44,13 +48,13 @@ class Jack:
     def _saver(self):
             
         if self.test is not True:
-            self.reader.model_to_ms(self.UVreal_jacked + self.UVimag_jacked*1j,
+            self.manager.model_to_ms(self.UVreal_jacked + self.UVimag_jacked*1j,
                                     1., 
                                     'replace', 
                                     (self.vis.split('/')[-1]).split('.ms')[0] + self.typ + '_Jacked_seed'+str(self.seed),
                                     self.wgt)
         else:
-            self.reader.model_to_ms(self.UVreal + self.UVimag*1j,
+            self.manager.model_to_ms(self.UVreal + self.UVimag*1j,
                                     1., 
                                     'replace', 
                                     (self.vis.split('/')[-1]).split('.ms')[0] + self.typ + '_Jacked_seed'+str(self.seed),
