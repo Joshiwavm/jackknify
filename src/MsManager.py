@@ -44,11 +44,7 @@ class MSmanager:
 
         
         for f, field in enumerate(self.fields):
-            print('- Processing field {0}'.format(field))
-
-            for s, spw in enumerate(self.spws[f]):
-                print('-- Spectral window {0}'.format(spw))
-                
+            for s, spw in enumerate(self.spws[f]):                
                 ms=casatools.ms()
                 ms.open(self.ms_file)
                 ms.selectinit(reset=True)
@@ -87,7 +83,7 @@ class MSmanager:
 
         return uvdist, UVreal, UVimag, uvwghts, us, vs
     
-    def model_to_ms(self, model, scale, todo, savename, sigma = None, iters = 0, mock = True):
+    def model_to_ms(self, model, sigma = None):
         
         try: shutil.copytree(self.ms_file, self.ms_modelfile)
         except:pass
@@ -97,24 +93,16 @@ class MSmanager:
         
         index = 0
         for f, field in enumerate(self.fields):
-            print('- Processing field {0}'.format(field))
             for s, spw in enumerate(self.spws[f]):
-                print('-- Spectral window {0}'.format(spw))
 
                 ms.selectinit(datadescid=int(spw))
                 ms.select({'field_id': int(field)})
 
                 rec = ms.getdata(['data', 'weight'])
                 freqs = ms.range('chan_freq')['chan_freq'][:,0]
-                       
-                if not mock:
-                    uvreal = (model[index:index+len(rec['data'][0][0]) * len(freqs)].real).reshape(len(rec['data'][0][0]), len(freqs)) 
-                    uvimag = (model[index:index+len(rec['data'][0][0]) * len(freqs)].imag).reshape(len(rec['data'][0][0]), len(freqs)) 
-                    uvreal = np.swapaxes(uvreal, 0,1) #/ 1e4 #Quicckkkfix 
-                    uvimag = np.swapaxes(uvimag, 0,1) #/ 1e4 #Quicckkkfix
-                else:
-                    uvreal = (model[index:index+len(rec['data'][0][0]) * len(freqs)].real).reshape(len(freqs), len(rec['data'][0][0])) 
-                    uvimag = (model[index:index+len(rec['data'][0][0]) * len(freqs)].imag).reshape(len(freqs), len(rec['data'][0][0])) 
+
+                uvreal = (model[index:index+len(rec['data'][0][0]) * len(freqs)].real).reshape(len(freqs), len(rec['data'][0][0])) 
+                uvimag = (model[index:index+len(rec['data'][0][0]) * len(freqs)].imag).reshape(len(freqs), len(rec['data'][0][0])) 
 
                 if sigma != None:
                     self.wgts  = rec['weight']
@@ -137,8 +125,5 @@ class MSmanager:
                 
                 index += len(rec['data'][0][0]) * len(freqs)
         ms.close()
-        
-        if  (todo== 'replace'): 
-            os.rename(self.ms_modelfile, self.ms_copydir + 'Model_'+ str(iters)+'_' + savename + '.ms')
-        elif (todo=='subtract'): 
-            os.rename(self.ms_modelfile, self.ms_copydir + 'Model-residue_'+ str(iters)+'_' + savename + '.ms')        
+
+        os.rename(self.ms_modelfile, self.ms_copydir + self.ms_save.split('/')[-1])

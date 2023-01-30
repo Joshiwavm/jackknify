@@ -14,16 +14,18 @@ class Jack:
                  band,
                  array,
                  samples, 
-                 test = False
+                 test = False,
+                 update_weights = False
                  ):
         
         # initialize variables
         # --------------------
-        self.test       = test 
-        self.seed       = 42
-        self.N          = samples
-        self.vis_input  = vis
-        self.vis_output = (vis.split('/')[-1]).split('.ms')[0] + '_Jacked_seed'+str(self.seed)+'.ms' 
+        self.test           = test 
+        self.update_weights = update_weights
+        self.seed           = 42
+        self.N              = samples
+        self.vis_input      = vis
+        self.vis_output     = (vis.split('/')[-1]).split('.ms')[0] + '_Jacked_seed'+str(self.seed)+'.ms' 
         
         # initialie MS reader
         self.manager    = MSmanager(self.vis_input, 
@@ -49,15 +51,9 @@ class Jack:
             
         if self.test is not True:
             self.manager.model_to_ms(self.UVreal_jacked + self.UVimag_jacked*1j,
-                                    1., 
-                                    'replace', 
-                                    (self.vis.split('/')[-1]).split('.ms')[0] + self.typ + '_Jacked_seed'+str(self.seed),
                                     self.wgt)
         else:
             self.manager.model_to_ms(self.UVreal + self.UVimag*1j,
-                                    1., 
-                                    'replace', 
-                                    (self.vis.split('/')[-1]).split('.ms')[0] + self.typ + '_Jacked_seed'+str(self.seed),
                                     self.wgt)
 
     def _stw_manual(self):     
@@ -88,43 +84,14 @@ class Jack:
         UVimag_jacked[indexing.astype(bool)] *= -1. 
         self.UVimag_jacked = UVimag_jacked        
 
-        self.wgt = None
-        # self._stw_manual()
+        if not self.update_weights: self.wgt = None
+        else: self._stw_manual()
         
     #######################
     ###     Imaging     ###
     #######################
     
     def _deconvolve(self): #normal
-
-        # HD1 stuff
-        # --------------------
-        tclean(       vis     =   self.vis_jacked.replace('Model_', 'Model_0_'), 
-                  imagename   =       self.vis_jacked.replace('.ms','_cube.im'),  
-                  niter       =                                               0,
-                  # spw         =                                            '25',
-                  imsize      =                                     self.imsize, 
-                  cell        =                                     self.imcell, 
-                  gridder     =                                      'standard', 
-                  weighting   =                                       'natural', 
-                  specmode    =                                          'cube') 
-        
-        exportfits(self.vis_jacked.replace('.ms','_cube.im.image'), 
-                   self.vis_jacked.replace('.ms','_cube.im.fits'),
-                   overwrite=True)  
-
-        image_name = self.vis_jacked.replace('.ms','_cube.im.fits')
-
-        os.system('rm -rf {0}.pb'.format(self.vis_jacked.replace('.ms','_cube.im')))
-        os.system('rm -rf {0}.psf'.format(self.vis_jacked.replace('.ms','_cube.im')))
-        os.system('rm -rf {0}.model'.format(self.vis_jacked.replace('.ms','_cube.im')))
-        os.system('rm -rf {0}.sumwt'.format(self.vis_jacked.replace('.ms','_cube.im')))
-        os.system('rm -rf {0}.weight'.format(self.vis_jacked.replace('.ms','_cube.im')))
-        os.system('rm -rf {0}.residual'.format(self.vis_jacked.replace('.ms','_cube.im')))
-        os.system('rm -rf {0}.image'.format(self.vis_jacked.replace('.ms','_cube.im')))
-
-        # Standard Stuff
-        # ----------------------
         
         tclean( vis         =                      self.vis_jacked, 
                 imagename   = self.vis_jacked.replace('.ms','.im'),  

@@ -1,14 +1,14 @@
 from src import jacked
 
-#which observations do you want to corrupt --> could do this in CLE
-VIS        = './data/Workable/HD1_Band6_tbin30s_cwidth30kms.ms' 
-FIELDS     = ['0']
-SPWS       = [['25','27','29','31','57','58','59','60','85','86','87','88','113','114','115','116']]
-BAND       = ['6']
-ARRAY      = ['7m']
+#which observations do you want to corrupt
+VIS        = './PATH/TO/MSfile' 
+FIELDS     = ['field1', 'field2']
+SPWS       = [['spw1','spw2'], ['spw1', 'spw2']]
+BAND       = ['BandX']
+ARRAY      = ['Your configuration'] # could be any of the following: 7m, C1, C2, CX...
 
 #how many new samples do you need
-N          = 100
+N          = ...
 
 #initilaize
 tool = jacked.Jack(vis     = VIS, 
