@@ -107,18 +107,11 @@ class MSmanager:
                 if sigma != None:
                     self.wgts  = rec['weight']
                     self.wgts  = np.zeros_like(self.wgts) + 1/sigma**2
-                    if   (todo== 'replace'): 
-                        rec['data'] = scale*np.array([(uvreal+1.0j*uvimag),(uvreal+1.0j*uvimag)])
-                        rec['weight'] = self.wgts
-                    elif (todo=='subtract'): 
-                        rec['data'] = np.copy(rec['data']) - scale*np.array([(uvreal+1.0j*uvimag),(uvreal+1.0j*uvimag)]) 
-                        rec['weight'] = self.wgts
-                else:
-                    if   (todo== 'replace'): 
-                        rec['data'] = scale*np.array([(uvreal+1.0j*uvimag),(uvreal+1.0j*uvimag)])
 
-                    elif (todo=='subtract'): 
-                        rec['data'] = np.copy(rec['data']) - scale*np.array([(uvreal+1.0j*uvimag),(uvreal+1.0j*uvimag)]) 
+                    rec['data'] = np.array([(uvreal+1.0j*uvimag),(uvreal+1.0j*uvimag)])
+                    rec['weight'] = self.wgts
+                else:
+                    rec['data'] = np.array([(uvreal+1.0j*uvimag),(uvreal+1.0j*uvimag)])
                 
                 ms.putdata(rec)
                 ms.reset()
