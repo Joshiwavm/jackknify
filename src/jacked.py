@@ -37,7 +37,7 @@ class Jack:
     
 
         self.manager.ms_modelfile = self.manager.ms_copydir + self.manager.ms_file.split('/')[-1]
-        self.vis_jacked =  self.manager.ms_copydir + self.vis_name  
+        self.vis_jacked =  self.manager.ms_copydir + self.vis_output  
             
     def _loader(self):
         uvdist, UVreal, UVimag, UVwgts, _, _ = self.manager.uvdata_loader()
