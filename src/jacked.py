@@ -1,7 +1,9 @@
 import os
 import tqdm
 import numpy as np
+
 from casatasks import tclean, exportfits
+from ImSettings import * 
 
 ####### Own Tools #######
 from MsManager import *
@@ -15,18 +17,22 @@ class Jack:
                  array,
                  samples, 
                  test = False,
-                 update_weights = False
+                 update_weights = False,
+                 startmodel     = '',
                  ):
         
         # initialize variables
         # --------------------
+        
         self.test           = test 
         self.update_weights = update_weights
         self.seed           = 42
+        
         self.N              = samples
         self.vis_input      = vis
         self.vis_output     = (vis.split('/')[-1]).split('.ms')[0] + '_Jacked_seed'+str(self.seed)+'.ms' 
-        
+        self.startmodel     = startmodel
+
         # initialie MS reader
         self.manager    = MSmanager(self.vis_input, 
                                     self.vis_output,
@@ -36,9 +42,11 @@ class Jack:
                                     array = array)    
     
 
+        self.imcase = Imparams(config=array, band=band)
+        
         self.manager.ms_modelfile = self.manager.ms_copydir + self.manager.ms_file.split('/')[-1]
         self.vis_jacked =  self.manager.ms_copydir + self.vis_output  
-            
+        
     def _loader(self):
         uvdist, UVreal, UVimag, UVwgts, _, _ = self.manager.uvdata_loader()
 
@@ -76,28 +84,30 @@ class Jack:
         np.random.seed(self.seed)
         np.random.shuffle(indexing)
 
-        UVreal_jacked = np.copy(self.UVreal)
-        UVreal_jacked[indexing.astype(bool)] *= -1.
-        self.UVreal_jacked = UVreal_jacked
+        self.UVreal_jacked = np.copy(self.UVreal)
+        self.UVreal_jacked[indexing.astype(bool)] *= -1.
         
-        UVimag_jacked = np.copy(self.UVimag)
-        UVimag_jacked[indexing.astype(bool)] *= -1. 
-        self.UVimag_jacked = UVimag_jacked        
+        self.UVimag_jacked = np.copy(self.UVimag)
+        self.UVimag_jacked[indexing.astype(bool)] *= -1. 
 
         if not self.update_weights: self.wgt = None
         else: self._stw_manual()
-        
-    #######################
-    ###     Imaging     ###
-    #######################
     
-    def _deconvolve(self): #normal
+    def _image(self):
+
+        spw = ''
+        for i,sp in enumerate(np.array(self.manager.spws).flatten()):
+            if not i ==0: spw += ','+sp
+            else: spw += sp
         
         tclean( vis         =                      self.vis_jacked, 
                 imagename   = self.vis_jacked.replace('.ms','.im'),  
                 niter       =                                    0, 
-                imsize      =                          self.imsize, 
-                cell        =                          self.imcell, 
+                startmodel  =                      self.startmodel,
+                spw         =                                  spw,
+                imsize      =                   self.imcase.imsize, 
+                cell        =   str(self.imcase.cellsize)+'arcsec', 
+                pblimit     =                                  0.0,
                 gridder     =                           'standard', 
                 weighting   =                            'natural', 
                 specmode    =                               'mfs')     
@@ -111,6 +121,13 @@ class Jack:
         os.system('rm -rf {0}.model'.format(self.vis_jacked.replace('.ms','.im')))
         os.system('rm -rf {0}.sumwt'.format(self.vis_jacked.replace('.ms','.im')))
         os.system('rm -rf {0}.weight'.format(self.vis_jacked.replace('.ms','.im')))
+
+        if len(self.startmodel) == 0:
+            print(self.startmodel)
+            exportfits(imagename = self.vis_jacked.replace('.ms','.im.residual'), 
+                       fitsimage = self.vis_jacked.replace('.ms','_model.im.fits'), 
+                       overwrite = True)
+
         os.system('rm -rf {0}.residual'.format(self.vis_jacked.replace('.ms','.im')))
         
     def run(self):
@@ -125,7 +142,8 @@ class Jack:
             self.Jack_it()
             print('.. Saving to MS')
             self._saver()
-            print('.. Deconvolve')
+
+            print('.. Image')
             self._image()
                     
             os.system('rm -vf *.last')
