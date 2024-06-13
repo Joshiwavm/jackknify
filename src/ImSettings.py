@@ -3,7 +3,7 @@ from math import log10, floor
 
 BINARY_VALUES = np.array([128, 256, 512, 1024, 2048])
 RESOLUTIONS   = { #arcsec
-    ('7m', 'Band1'): ...,
+    ('7m', 'Band1'): 31.5,
     ('7m', 'Band2'): ...,
     ('7m', 'Band3'): 12.5,
     ('7m', 'Band4'): 8.35,
@@ -14,7 +14,7 @@ RESOLUTIONS   = { #arcsec
     ('7m', 'Band9'): 1.93,
     ('7m', 'Band10'):1.44,
 
-    ('C1', 'Band1'): ...,
+    ('C1', 'Band1'): 8.45,
     ('C1', 'Band2'): ...,
     ('C1', 'Band3'): 3.38,
     ('C1', 'Band4'): 2.25,
@@ -25,7 +25,7 @@ RESOLUTIONS   = { #arcsec
     ('C1', 'Band9'): 0.52,
     ('C1', 'Band10'):0.39,
 
-    ('C2', 'Band1'): ...,
+    ('C2', 'Band1'): 5.75,
     ('C2', 'Band2'): ...,
     ('C2', 'Band3'): 2.30,
     ('C2', 'Band4'): 1.53,
@@ -36,7 +36,7 @@ RESOLUTIONS   = { #arcsec
     ('C2', 'Band9'): 0.35,
     ('C2', 'Band10'):0.26,
 
-    ('C3', 'Band1'): ...,
+    ('C3', 'Band1'): 3.55,
     ('C3', 'Band2'): ...,
     ('C3', 'Band3'): 1.42,
     ('C3', 'Band4'): 0.94,
@@ -47,7 +47,7 @@ RESOLUTIONS   = { #arcsec
     ('C3', 'Band9'): 0.22,
     ('C3', 'Band10'):0.16,
 
-    ('C4', 'Band1'): ...,
+    ('C4', 'Band1'): 2.30,
     ('C4', 'Band2'): ...,
     ('C4', 'Band3'): 0.92,
     ('C4', 'Band4'): 0.61,
@@ -58,7 +58,7 @@ RESOLUTIONS   = { #arcsec
     ('C4', 'Band9'): 0.14,
     ('C4', 'Band10'):0.11,
 
-    ('C5', 'Band1'): ...,
+    ('C5', 'Band1'): 1.27,
     ('C5', 'Band2'): ...,
     ('C5', 'Band3'): 0.55,
     ('C5', 'Band4'): 0.36,
@@ -69,7 +69,8 @@ RESOLUTIONS   = { #arcsec
     ('C5', 'Band9'): 0.084,
     ('C5', 'Band10'):0.063,
 
-    ('C6', 'Band1'): ...,
+    ('C6', 'Band1'): 0.78,
+    ('C6', 'Band2'): ...,
     ('C6', 'Band3'): 0.31,
     ('C6', 'Band4'): 0.20,
     ('C6', 'Band5'): 0.17,
@@ -79,7 +80,7 @@ RESOLUTIONS   = { #arcsec
     ('C6', 'Band9'): 0.047,
     ('C6', 'Band10'):0.035,
 
-    ('C7', 'Band1'): ...,
+    ('C7', 'Band1'): 0.53,
     ('C7', 'Band2'): ...,
     ('C7', 'Band3'): 0.21,
     ('C7', 'Band4'): 0.14,
@@ -90,7 +91,7 @@ RESOLUTIONS   = { #arcsec
     ('C7', 'Band9'): 0.033,
     ('C7', 'Band10'):0.024,
 
-    ('C8', 'Band1'): ...,
+    ('C8', 'Band1'): 0.240,
     ('C8', 'Band2'): ...,
     ('C8', 'Band3'): 0.096,
     ('C8', 'Band4'): 0.064,
@@ -101,7 +102,7 @@ RESOLUTIONS   = { #arcsec
     ('C8', 'Band9'): 0.015,
     ('C8', 'Band10'):0.011,
 
-    ('C9', 'Band1'): ...,
+    ('C9', 'Band1'): 0.143,
     ('C9', 'Band2'): ...,
     ('C9', 'Band3'): 0.057,
     ('C9', 'Band4'): 0.038,
@@ -112,7 +113,7 @@ RESOLUTIONS   = { #arcsec
     ('C9', 'Band9'): 0.0088,
     ('C9', 'Band10'):...,
 
-    ('C10', 'Band1'): ...,
+    ('C10', 'Band1'): 0.105,
     ('C10', 'Band2'): ...,
     ('C10', 'Band3'): 0.042,
     ('C10', 'Band4'): 0.028,
@@ -125,7 +126,7 @@ RESOLUTIONS   = { #arcsec
 }
 
 FREQUENCIES = { #GHz
-    ('Band1'): ...,
+    ('Band1'):  40,
     ('Band2'): ...,
     ('Band3'): 100,
     ('Band4'): 150,
@@ -163,7 +164,9 @@ class Imparams:
         bit_value = BINARY_VALUES[np.argmin(abs(BINARY_VALUES - ideal))]
         if bit_value >= ideal:
             return bit_value
-        else: return BINARY_VALUES[np.argmin(abs(BINARY_VALUES - ideal)) + 1]
+        elif (np.argmin(abs(BINARY_VALUES - ideal)) + 1) < 5: 
+            return BINARY_VALUES[np.argmin(abs(BINARY_VALUES - ideal)) + 1]
+        else: return BINARY_VALUES[-1]
 
     def _round_to_1(self, x):
         return round(x, -int(floor(log10(abs(x)))))
