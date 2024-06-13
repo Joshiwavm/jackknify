@@ -3,9 +3,9 @@ import os
 import astropy.constants as const
 
 import casatools
-from Settings import * 
+from ImSettings import * 
 
-# The class for handeling ms files
+# The class for handling ms files
 class MSmanager:
     def __init__(   self, 
                     filename_in,
@@ -28,11 +28,9 @@ class MSmanager:
         
         self.ms_modelfile = self.ms_copydir + self.ms_file.split('/')[-1]
         
-        if not os.path.exists(self.manager.ms_copydir):
-            os.makedirs(self.manager.ms_copydir)
+        if not os.path.exists(self.ms_copydir):
+            os.makedirs(self.ms_copydir)
         
-        self.imreader = Imparams(self.obs_type, self.band)
-
     def uvdata_loader(self):
 
         UVreal = np.empty(0)
@@ -103,15 +101,13 @@ class MSmanager:
 
                 uvreal = (model[index:index+len(rec['data'][0][0]) * len(freqs)].real).reshape(len(freqs), len(rec['data'][0][0])) 
                 uvimag = (model[index:index+len(rec['data'][0][0]) * len(freqs)].imag).reshape(len(freqs), len(rec['data'][0][0])) 
+                
+                rec['data'] = np.array([(uvreal+1.0j*uvimag),(uvreal+1.0j*uvimag)])
 
                 if sigma != None:
                     self.wgts  = rec['weight']
                     self.wgts  = np.zeros_like(self.wgts) + 1/sigma**2
-
-                    rec['data'] = np.array([(uvreal+1.0j*uvimag),(uvreal+1.0j*uvimag)])
                     rec['weight'] = self.wgts
-                else:
-                    rec['data'] = np.array([(uvreal+1.0j*uvimag),(uvreal+1.0j*uvimag)])
                 
                 ms.putdata(rec)
                 ms.reset()
