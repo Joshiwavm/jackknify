@@ -1,16 +1,5 @@
-import os
-import pathlib
-import time as ttime
-from collections.abc import Mapping
-from datetime import datetime
+from astropy.utils.data import download_file
 
-import astropy as ap
-import h5py
-import pandas as pd
-import pytz
-import requests
-import yaml
-from tqdm import tqdm
 
 def fetch(
     source_path: str,

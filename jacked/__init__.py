@@ -1,3 +1,3 @@
 from .ImSettings import *
 from.MsManager import MSmanager
-from .Collect import Jack
+from .Operator import Jack
