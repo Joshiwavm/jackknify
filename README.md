@@ -15,15 +15,15 @@ Installation
 
 ``jacked`` uses ``casatask`` and ``casatools`` to interface with CASA measurements. ``casatask`` and ``casatools`` requires `python=3.6`. This requirement limits the compatabillity of jacked sadly enough with other packages such as [interferopy](https://interferopy.readthedocs.io/en/latest/index.html). Therefore, we recommand (even though annoying) to install ``jacked`` in a seperate environment from the one used to do the data analysis on. 
 
-``jacked`` itselves can be installed through::
+``jacked`` itselves can be installed through
 
     pip install jacked
 
-or alternatively through::
+or alternatively
 
-python -m pip install git+https://github.com/Joshiwavm/jacked
+    python -m pip install git+https://github.com/Joshiwavm/jacked
 
-or 
+or from the source
 
     git clone https://github.com/Joshiwavm/jacked
     cd jacked
