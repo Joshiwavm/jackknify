@@ -8,7 +8,7 @@ setup(
     version="0.1.0",
     author="Joshiwa van Marrewijk",
     author_email="joshiwa01@gmail.com",
-    description="A brief description of your project",
+    description="Jackknifing interferometric datasets",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Joshiwavm/jacked", 
