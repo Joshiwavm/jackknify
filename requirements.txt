@@ -1,10 +1,14 @@
-numpy
-pandas
-h5py
-math
+# install from url
+-i https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatools
+-i https://casa-pip.nrao.edu/repository/pypi-casa-release/simple casatasks
+
+# Other packages
+numpy>=1.18.4
+pandas>=1.1.5
+h5py>=3.1.0
+python-math
 os
-astropy
+astropy>=4.0.2
 shutil
-tqdm
-casatools
-casatasks
+tqdm>=4.63.0
+-e .

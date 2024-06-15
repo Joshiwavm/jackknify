@@ -1,8 +1,7 @@
 Jack-knife
 ==========
 
-``jacked``, is a python-based package that jackknifes ALMA visibillites to create noise realizations of the observations.  Tutorials for installation and
-usage can be found in the Notebooks folder. 
+``jacked``, is a python-based package that jackknifes ALMA visibillites to create noise realizations of the observations. 
 
 Methodology
 ==========
@@ -11,3 +10,26 @@ Jackknifing is a simplistic but effictive tool to quantifiy the underlying noise
 
 The full methodology can be found [here](https://arxiv.org/abs/2210.03754)
 
+Installation
+============
+
+``jacked`` uses ``casatask`` and ``casatools`` to interface with CASA measurements. ``casatask`` and ``casatools`` requires `python=3.6`. This requirement limits the compatabillity of jacked sadly enough with other packages such as [interferopy](https://interferopy.readthedocs.io/en/latest/index.html). Therefore, we recommand (even though annoying) to install ``jacked`` in a seperate environment from the one used to do the data analysis on. 
+
+``jacked`` itselves can be installed through::
+
+    pip install jacked
+
+or alternatively through::
+
+python -m pip install git+https://github.com/Joshiwavm/jacked
+
+or 
+
+    git clone https://github.com/Joshiwavm/jacked
+    cd jacked
+    pip install -e .
+
+Documentation
+============
+
+tutorials. 
