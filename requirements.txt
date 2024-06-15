@@ -1,0 +1,10 @@
+numpy
+pandas
+h5py
+math
+os
+astropy
+shutil
+tqdm
+casatools
+casatasks

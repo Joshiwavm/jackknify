@@ -18,7 +18,6 @@ class Jack:
                  samples, 
                  test = False,
                  update_weights = False,
-                 startmodel     = '',
                  ):
         
         # initialize variables
@@ -28,24 +27,28 @@ class Jack:
         self.update_weights = update_weights
         self.seed           = 42
         
+        self.fields         = fields
+        self.spws           = spws
         self.N              = samples
         self.vis_input      = vis
-        self.vis_output     = (vis.split('/')[-1]).split('.ms')[0] + '_Jacked_seed'+str(self.seed)+'.ms' 
-        self.startmodel     = startmodel
-
-        # initialie MS reader
-        self.manager    = MSmanager(self.vis_input, 
-                                    self.vis_output,
-                                    spws = spws, 
-                                    fields = fields, 
-                                    band = band, 
-                                    array = array)    
-    
-
-        self.imcase = Imparams(config=array, band=band)
+        self.imcase         = Imparams(config=array, band=band)
         
-        self.manager.ms_modelfile = self.manager.ms_copydir + self.manager.ms_file.split('/')[-1]
-        self.vis_jacked =  self.manager.ms_copydir + self.vis_output  
+    @property
+    def manager(self):
+        return MSmanager(self.vis_input, 
+                         self.vis_output,
+                         spws = self.spws, 
+                         fields = self.fields, 
+                         band = self.band, 
+                         array = self.array)
+
+    @property
+    def vis_jacked(self):    
+        return self.manager.ms_copydir + self.vis_output  
+
+    @property
+    def vis_output(self):
+        return (self.vis_input.split('/')[-1]).split('.ms')[0] + '_Jacked_seed'+str(self.seed)+'.ms' 
         
     def _loader(self):
         uvdist, UVreal, UVimag, UVwgts, _, _ = self.manager.uvdata_loader()
@@ -103,14 +106,12 @@ class Jack:
         tclean( vis         =                      self.vis_jacked, 
                 imagename   = self.vis_jacked.replace('.ms','.im'),  
                 niter       =                                    0, 
-                startmodel  =                      self.startmodel,
                 spw         =                                  spw,
-                imsize      =                   self.imcase.imsize, 
+                imsize      =                self.imcase.imsize//2, 
                 cell        =   str(self.imcase.cellsize)+'arcsec', 
-                pblimit     =                                  0.0,
                 gridder     =                           'standard', 
                 weighting   =                            'natural', 
-                specmode    =                               'mfs')     
+                specmode    =                               'cube')     
         
         exportfits(imagename = self.vis_jacked.replace('.ms','.im.image'), 
                    fitsimage = self.vis_jacked.replace('.ms','.im.fits'), 
@@ -121,14 +122,8 @@ class Jack:
         os.system('rm -rf {0}.model'.format(self.vis_jacked.replace('.ms','.im')))
         os.system('rm -rf {0}.sumwt'.format(self.vis_jacked.replace('.ms','.im')))
         os.system('rm -rf {0}.weight'.format(self.vis_jacked.replace('.ms','.im')))
-
-        if len(self.startmodel) == 0:
-            print(self.startmodel)
-            exportfits(imagename = self.vis_jacked.replace('.ms','.im.residual'), 
-                       fitsimage = self.vis_jacked.replace('.ms','_model.im.fits'), 
-                       overwrite = True)
-
         os.system('rm -rf {0}.residual'.format(self.vis_jacked.replace('.ms','.im')))
+        os.system('rm -rf {0}.ms'.format(self.vis_jacked))
         
     def run(self):
 

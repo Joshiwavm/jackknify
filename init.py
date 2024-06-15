@@ -1,4 +1,4 @@
-from src import jacked
+import jacked
 
 #which observations do you want to corrupt
 VIS        = './PATH/TO/MSfile' 
