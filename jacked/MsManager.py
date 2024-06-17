@@ -1,31 +1,25 @@
 import shutil
+import numpy as np
 import os
 import astropy.constants as const
-
 import casatools
-from ImSettings import * 
 
 # The class for handling ms files
 class MSmanager:
     def __init__(   self, 
                     filename_in,
                     filename_out,
+                    outdir,
                     spws, 
                     fields,
-                    band,
-                    array
                 ):
       
         self.ms_file  = filename_in
         self.ms_save  = filename_out
         self.spws     = spws
         self.fields   = fields
-        self.band     = band
-        self.obs_type = array
 
-        self.binvis     = './output/{1}/output_{0}_{1}.ms.field-fid.spw-sid'.format(band,self.obs_type)
-        self.ms_copydir = './output/{1}/model/'.format(band,self.obs_type)
-        
+        self.ms_copydir = outdir
         self.ms_modelfile = self.ms_copydir + self.ms_file.split('/')[-1]
         
         if not os.path.exists(self.ms_copydir):

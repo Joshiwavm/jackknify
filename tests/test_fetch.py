@@ -1,4 +1,3 @@
 from jacked.io import fetch
 
-ms_file = fetch("ms_files/Glass_z13.ms")
-print(ms_file)
+ms_file = fetch("/tmp/Glass_z13.ms")

@@ -8,6 +8,4 @@ setup(
     description="Jackknifing interferometric datasets",
     long_description_content_type="text/markdown",
     url="https://github.com/Joshiwavm/jacked", 
-    packages=find_packages(),
-    python_requires='>=3.6',
-)
+    packages=find_packages(),)

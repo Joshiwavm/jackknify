@@ -1,23 +1,21 @@
+from casatasks import tclean, exportfits
 import os
 import tqdm
-import numpy as np
+from IPython.display import clear_output
 
-from casatasks import tclean, exportfits
-from ImSettings import * 
-
-####### Own Tools #######
-from MsManager import *
+from .ImSettings import * 
+from .MsManager import MSmanager
 
 class Jack:
     def __init__(self, 
-                 vis, 
-                 spws, 
-                 fields, 
-                 band,
-                 array,
-                 samples, 
-                 test = False,
-                 update_weights = False,
+                 fname: str, 
+                 outdir: str,
+                 spws: list, 
+                 fields: list, 
+                 band: str,
+                 array: str,
+                 test: bool = False,
+                 update_weights: bool = False,
                  ):
         
         # initialize variables
@@ -25,22 +23,29 @@ class Jack:
         
         self.test           = test 
         self.update_weights = update_weights
+        self.band           = band
+        self.array          = array
         self.seed           = 42
-        
         self.fields         = fields
         self.spws           = spws
-        self.N              = samples
-        self.vis_input      = vis
-        self.imcase         = Imparams(config=array, band=band)
+        self.vis_input      = fname
+
+
+        # check if it exists
+        self.outdir         = outdir
         
     @property
     def manager(self):
-        return MSmanager(self.vis_input, 
-                         self.vis_output,
+        return MSmanager(filename_in = self.vis_input, 
+                         filename_out = self.vis_output,
+                         outdir = self.outdir+'ms_files/',
                          spws = self.spws, 
                          fields = self.fields, 
-                         band = self.band, 
-                         array = self.array)
+                        )
+    
+    @property
+    def imcase(self):
+        return Imparams(config=self.array, band=self.band)
 
     @property
     def vis_jacked(self):    
@@ -80,7 +85,7 @@ class Jack:
             
         self.wgt = 1/(np.nanstd(self.UVreal_binned))**2/ bin_frac
     
-    def Jack_it(self):
+    def _jack_it(self):
         indexing = np.ones_like(self.UVreal)
         indexing[:len(indexing)//2] = 0
 
@@ -96,50 +101,67 @@ class Jack:
         if not self.update_weights: self.wgt = None
         else: self._stw_manual()
     
-    def _image(self):
+    def clean(self,
+               vis
+               ):
+        
+
+        self.outfile = '{0}{1}'.format(self.outdir,'cubes/')
+
+        if not os.path.exists(self.outfile):
+            os.makedirs(self.outfile)
+        
+        self.outfile = self.outfile + '{0}'.format(vis.split('/')[-1])
+        self.outfile = self.outfile.replace('.ms','.im')
 
         spw = ''
         for i,sp in enumerate(np.array(self.manager.spws).flatten()):
             if not i ==0: spw += ','+sp
             else: spw += sp
-        
-        tclean( vis         =                      self.vis_jacked, 
-                imagename   = self.vis_jacked.replace('.ms','.im'),  
+
+        tclean( vis         =                                  vis, 
+                imagename   =                              self.outfile,  
                 niter       =                                    0, 
                 spw         =                                  spw,
-                imsize      =                self.imcase.imsize//2, 
+                imsize      =                   self.imcase.imsize, 
                 cell        =   str(self.imcase.cellsize)+'arcsec', 
                 gridder     =                           'standard', 
                 weighting   =                            'natural', 
                 specmode    =                               'cube')     
         
-        exportfits(imagename = self.vis_jacked.replace('.ms','.im.image'), 
-                   fitsimage = self.vis_jacked.replace('.ms','.im.fits'), 
+        exportfits(imagename = self.outfile + '.image', 
+                   fitsimage = self.outfile + '.fits', 
                    overwrite = True)
         
-        os.system('rm -rf {0}.pb'.format(self.vis_jacked.replace('.ms','.im')))
-        os.system('rm -rf {0}.psf'.format(self.vis_jacked.replace('.ms','.im')))
-        os.system('rm -rf {0}.model'.format(self.vis_jacked.replace('.ms','.im')))
-        os.system('rm -rf {0}.sumwt'.format(self.vis_jacked.replace('.ms','.im')))
-        os.system('rm -rf {0}.weight'.format(self.vis_jacked.replace('.ms','.im')))
-        os.system('rm -rf {0}.residual'.format(self.vis_jacked.replace('.ms','.im')))
-        os.system('rm -rf {0}.ms'.format(self.vis_jacked))
+        os.system('rm -rf {0}.pb'.format(self.outfile))
+        os.system('rm -rf {0}.psf'.format(self.outfile))
+        os.system('rm -rf {0}.model'.format(self.outfile))
+        os.system('rm -rf {0}.weight'.format(self.outfile))
+        os.system('rm -rf {0}.residual'.format(self.outfile))
+        os.system('rm -rf {0}.image'.format(self.outfile))
+        os.system('rm -rf {0}.sumwt'.format(self.outfile))
         
-    def run(self):
+    def run(self, 
+            samples: int = 1,
+            seed: int = 42
+            ):
+        
+        for i in tqdm.tqdm(range(0,samples,1)):
 
-        for i in range(0,self.N,1):
-            
-            self.seed += i
+            self.seed = i + seed
 
             print('.. Loading in MS')
             self._loader()
             print('.. Jack Knife it')
-            self.Jack_it()
+            self._jack_it()
             print('.. Saving to MS')
             self._saver()
 
             print('.. Image')
-            self._image()
+            self.clean(self.vis_jacked)
                     
             os.system('rm -vf *.last')
             os.system('rm -vf *.log')
+
+            if i != samples-1:
+                clear_output(True)

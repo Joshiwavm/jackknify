@@ -1,5 +1,4 @@
 import numpy as np
-from math import log10, floor
 
 BINARY_VALUES = np.array([128, 256, 512, 1024, 2048])
 RESOLUTIONS   = { #arcsec
@@ -157,7 +156,7 @@ class Imparams:
         else: return 12
 
     def find_FOV(self):
-        return 2.44 * np.rad2deg(299792458/self.freq/self.pb) * 3600 #arcsec
+        return 2.44 * np.rad2deg(299792458/self.freq/self.pb) * 3600 // 2 #arcsec
 
     def find_imsize(self, pb):
         ideal = pb/self.cellsize
@@ -169,7 +168,7 @@ class Imparams:
         else: return BINARY_VALUES[-1]
 
     def _round_to_1(self, x):
-        return round(x, -int(floor(log10(abs(x)))))
+        return round(x, -int(np.floor(np.log10(abs(x)))))
 
     def find_cellsize(self):
         res = RESOLUTIONS[self.config, self.band]/2./10.
