@@ -21,26 +21,26 @@ for fname in fits_files:
         os.mkdir(outrun)
     
     cube = Cube(direc + fname)
-    catP, catN, candP, candN = cube.findclumps_full(output_file=outrun + 'findlcumps',
-                                                    kernels=np.arange(1, 12, 2),
-                                                    SNR_min=3,                                               
-                                                    delta_offset_arcsec=1,
-                                                    delta_freq=0.4,
-                                                    
-                                                    run_search=True,
-                                                    run_crop=False,#True
-                                                    run_fidelity=False, #True
-                                                    
-#                                                     fidelity_bins=np.arange(0, 10, 0.2),
-#                                                     min_SN_fit=3.0,
-#                                                     fidelity_threshold=0.5,
-                                                    
-                                                    verbose=True,
-                                                    sextractor_param_file='default.sex',
-                                                    ncores=4)
+    _ = cube.findclumps_full(output_file=outrun + 'findlcumps',
+                        kernels=np.arange(1, 12, 2),
+                        SNR_min=3,                                               
+                        delta_offset_arcsec=1,
+                        delta_freq=0.4,
+
+                        run_search=True,
+                        run_crop=True,#True
+                        run_fidelity=True, #True
+
+                        fidelity_bins=np.arange(0, 10, 0.2),
+                        min_SN_fit=3.0,
+                        fidelity_threshold=0.5,
+
+                        verbose=True,
+                        sextractor_param_file='default.sex',
+                        ncores=4)
+
+#     if not os.path.exists(outrun+'findclumpoutput/'):
+#         os.mkdir(outrun+'findclumpoutput/')
     
-    if not os.path.exists(outrun+'findclumpoutput/'):
-        os.mkdir(outrun+'findclumpoutput/')
-    
-    np.save(file = outrun+'findclumpoutput/catP_catN_CandP_CandN.npy',
-            arr  = np.array([catP, catN, candP, candN]))
+#     np.save(file = outrun+'findclumpoutput/catP_catN_CandP_CandN.npy',
+#             arr  = np.array([catP, catN, candP, candN]))
