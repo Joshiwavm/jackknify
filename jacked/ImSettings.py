@@ -149,14 +149,14 @@ class Imparams:
         self.freq   = FREQUENCIES[band]*1e9
         
         self.cellsize = self.find_cellsize()
-        self.imsize   = self.find_imsize(self.find_FOV())
+        self.imsize   = self.find_imsize(self.find_FOV())//2
 
     def _find_pb(self):
         if self.config == '7m': return 7
         else: return 12
 
     def find_FOV(self):
-        return 2.44 * np.rad2deg(299792458/self.freq/self.pb) * 3600 // 2 #arcsec
+        return 2.44 * np.rad2deg(299792458/self.freq/self.pb) * 3600  #arcsec
 
     def find_imsize(self, pb):
         ideal = pb/self.cellsize

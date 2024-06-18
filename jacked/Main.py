@@ -1,6 +1,7 @@
 from casatasks import tclean, exportfits
 import os
 import tqdm
+from astropy.io import fits
 from IPython.display import clear_output
 
 from .ImSettings import * 
@@ -172,24 +173,30 @@ class Jack:
                  moment: str = 'continuum',
                  channels:int = None,
                  center_coord: tuple = (None, None), 
-                 box_size_arcsec: float = None
+                 box_size_arcsec: float = None,
+                 idx:int = 0,
                  ):
         
         if not os.path.exists(savedir):
             os.makedirs(savedir)
-
         if not hasattr(self, 'outfile'):  
             raise RuntimeError("Please provide a fits file in self.outfile, or simply run clean.")
+        else:
+            fname = self.outfile + '.fits'
         
-        IMAGE(fname = self.outfile + '.fits',
-              outdir = savedir,
-              moment = moment, 
-              channels = channels, 
-              center_coord = center_coord, 
-              box_size_arcsec = box_size_arcsec)
+        obj = IMAGE(fname = fname,
+                    moment = moment, 
+                    channels = channels, 
+                    center_coord = center_coord, 
+                    idx = idx,
+                    box_size_arcsec = box_size_arcsec)
+        
+        obj.plot(outdir = savedir)
 
     def plot_slp(self,
                  savedir:str = './',
+                 idx:int = 0,
+                 size:float = 1.,
                 ):
 
         if not os.path.exists(savedir):
@@ -197,9 +204,8 @@ class Jack:
 
         if not hasattr(self, 'outfile'):  
             raise RuntimeError("Please provide a fits file in self.outfile, or simply run clean.")
-        
-        slp = SLP()
-        slp.run()
-        slp.plot()
-        
+        else:
+            fname = self.outfile + '.fits'
 
+        obj = SLP(fname, size, idx, amount = 1000, visualize=False)
+        obj.plot(outdir = savedir)
