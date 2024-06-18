@@ -5,6 +5,7 @@ from IPython.display import clear_output
 
 from .ImSettings import * 
 from .MsManager import MSmanager
+from .Plot import SLP, IMAGE
 
 class Jack:
     def __init__(self, 
@@ -20,7 +21,6 @@ class Jack:
         
         # initialize variables
         # --------------------
-        
         self.test           = test 
         self.update_weights = update_weights
         self.band           = band
@@ -29,11 +29,11 @@ class Jack:
         self.fields         = fields
         self.spws           = spws
         self.vis_input      = fname
-
-
-        # check if it exists
         self.outdir         = outdir
-        
+
+        if not os.path.exists(self.outdir):
+            os.makedirs(self.outdir)
+                
     @property
     def manager(self):
         return MSmanager(filename_in = self.vis_input, 
@@ -102,9 +102,9 @@ class Jack:
         else: self._stw_manual()
     
     def clean(self,
-               vis
+               vis: str,
+               reffreq:str = ''
                ):
-        
 
         self.outfile = '{0}{1}'.format(self.outdir,'cubes/')
 
@@ -120,13 +120,14 @@ class Jack:
             else: spw += sp
 
         tclean( vis         =                                  vis, 
-                imagename   =                              self.outfile,  
+                imagename   =                         self.outfile,  
                 niter       =                                    0, 
                 spw         =                                  spw,
                 imsize      =                   self.imcase.imsize, 
                 cell        =   str(self.imcase.cellsize)+'arcsec', 
                 gridder     =                           'standard', 
                 weighting   =                            'natural', 
+                reffreq     =                              reffreq,
                 specmode    =                               'cube')     
         
         exportfits(imagename = self.outfile + '.image', 
@@ -165,3 +166,40 @@ class Jack:
 
             if i != samples-1:
                 clear_output(True)
+
+    def plot_map(self, 
+                 savedir:str = './',
+                 moment: str = 'continuum',
+                 channels:int = None,
+                 center_coord: tuple = (None, None), 
+                 box_size_arcsec: float = None
+                 ):
+        
+        if not os.path.exists(savedir):
+            os.makedirs(savedir)
+
+        if not hasattr(self, 'outfile'):  
+            raise RuntimeError("Please provide a fits file in self.outfile, or simply run clean.")
+        
+        IMAGE(fname = self.outfile + '.fits',
+              outdir = savedir,
+              moment = moment, 
+              channels = channels, 
+              center_coord = center_coord, 
+              box_size_arcsec = box_size_arcsec)
+
+    def plot_slp(self,
+                 savedir:str = './',
+                ):
+
+        if not os.path.exists(savedir):
+            os.makedirs(savedir)
+
+        if not hasattr(self, 'outfile'):  
+            raise RuntimeError("Please provide a fits file in self.outfile, or simply run clean.")
+        
+        slp = SLP()
+        slp.run()
+        slp.plot()
+        
+
