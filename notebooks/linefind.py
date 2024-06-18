@@ -12,7 +12,7 @@ files = os.listdir(direc)
 fits_files = [file for file in files if file.endswith('.fits')]
 
 
-for fname in fits_files:
+for fname in fits_files[1:]:
     print(fname)
     print()
     
@@ -29,11 +29,11 @@ for fname in fits_files:
 
                         run_search=True,
                         run_crop=True,#True
-                        run_fidelity=True, #True
+                        run_fidelity=False, #True
 
-                        fidelity_bins=np.arange(0, 10, 0.2),
-                        min_SN_fit=3.0,
-                        fidelity_threshold=0.5,
+#                         fidelity_bins=np.arange(0, 10, 0.2),
+#                         min_SN_fit=3.0,
+#                         fidelity_threshold=0.5,
 
                         verbose=True,
                         sextractor_param_file='default.sex',
