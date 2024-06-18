@@ -179,6 +179,7 @@ class Jack:
         
         if not os.path.exists(savedir):
             os.makedirs(savedir)
+            
         if not hasattr(self, 'outfile'):  
             raise RuntimeError("Please provide a fits file in self.outfile, or simply run clean.")
         else:
@@ -207,5 +208,5 @@ class Jack:
         else:
             fname = self.outfile + '.fits'
 
-        obj = SLP(fname, size, idx, amount = 1000, visualize=False)
+        obj = SLP(fname, size, idx, amount = 2000, visualize=False)
         obj.plot(outdir = savedir)

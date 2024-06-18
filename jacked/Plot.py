@@ -20,23 +20,14 @@ def ellipsoid_mask(im, xc, yc, a, b, Theta):
     return (e<=1)
 
 class SLP():
-    """
-    A class that manages cleaned data cubes and estiamtes the spectral line profile of that cube given a mask to sum over
-    Input:
-        cube (channel, image, image): Cleaned data in units of Jy/pixel
-        mask (image, image): A mask that matches the size of the image. The mask is used to some over the pixels.
-    Output (with function execute):
-        slp (len(channels)): Intensity, units of Jy.
-        bootstrap_std: bootstrapped std in units of Jy. 
-    
-    """
     
     def __init__(self, 
                  fname: str,
                  size: float, 
                  idx:int = 0,
                  amount: int = 200, 
-                 visualize: bool = False
+                 visualize: bool = False,
+                 center_coord: tuple = (None, None)
                  ):
 
         # Load in Cube
@@ -47,7 +38,7 @@ class SLP():
         self.header = self.hdu[idx].header
         self.pixel_size = self.header['CDELT1']
         
-
+        # Get Beam
         try:
             BMAJ = np.average(self.hdu[1].data['BMAJ'])/3600  # arcseconds
             BMIN = np.average(self.hdu[1].data['BMIN'])/3600  # arcseconds
@@ -57,17 +48,26 @@ class SLP():
             BMIN = self.header['BMIN']   # arcseconds
             BPA = self.header['BPA']  # Position angle in degrees
 
+        # convert
         BeamArea     = np.pi *BMIN*BMAJ/self.pixel_size**2/(4*np.log(2))   # pixels per beam 
         self.cube    = self.cube/BeamArea*1e3                               # mJy/pixel
 
-        self.mask = ellipsoid_mask(self.cube[0], 
-                            len(self.cube[0])//2, 
-                            len(self.cube[0])//2, 
-                            BMIN/self.pixel_size * size, 
-                            BMAJ/self.pixel_size * size, 
-                            np.deg2rad(BPA)
-                            )
+        # make mask
+        wcs = WCS(self.header, naxis = 2)
+        if self.center_coord[0] == None:
+            center_x, center_y = (self.img.shape[-2]//2, self.img.shape[-1]//2)
+        else:
+            center_x, center_y = wcs.world_to_pixel_values(self.center_coord[0], self.center_coord[1])
         
+        self.mask = ellipsoid_mask(self.cube[0], 
+                                   center_x, 
+                                   center_y, 
+                                   BMIN/self.pixel_size * size, 
+                                   BMAJ/self.pixel_size * size, 
+                                   np.deg2rad(BPA)
+                                   )
+        
+
         self.visualize = visualize
         self.amount = amount
         
