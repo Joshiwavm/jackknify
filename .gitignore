@@ -132,4 +132,4 @@ dmypy.json
 data/
 output/
 plots/
-notebooks/testing.ipynb
+docs/notebooks/testing.ipynb

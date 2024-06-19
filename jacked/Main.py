@@ -192,21 +192,22 @@ class Jack:
                     idx = idx,
                     box_size_arcsec = box_size_arcsec)
         
-        obj.plot(outdir = savedir)
+        obj.plot(savedir = savedir)
 
     def plot_slp(self,
                  savedir:str = './',
                  idx:int = 0,
                  size:float = 1.,
+                 savenp:bool=False,
                 ):
 
         if not os.path.exists(savedir):
             os.makedirs(savedir)
 
-        if not hasattr(self, 'outfile'):  
+        if not hasattr(self, 'outfile'):
             raise RuntimeError("Please provide a fits file in self.outfile, or simply run clean.")
         else:
             fname = self.outfile + '.fits'
 
-        obj = SLP(fname, size, idx, amount = 2000, visualize=False)
-        obj.plot(outdir = savedir)
+        obj = SLP(fname, size, idx, amount = 4000, visualize=False)
+        obj.plot(savedir = savedir, savenp = savenp)

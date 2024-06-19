@@ -4,6 +4,8 @@ import numpy as np
 from tqdm import tqdm
 from astropy.io import fits
 from astropy.wcs import WCS
+from astropy.constants import c
+from astropy import units as u
 
 from IPython.display import clear_output
 
@@ -37,6 +39,7 @@ class SLP():
         self.cube   = self.hdu[idx].data[0] if self.hdu[idx].data.ndim > 3 else self.hdu[idx].data[None]
         self.header = self.hdu[idx].header
         self.pixel_size = self.header['CDELT1']
+        self.center_coord = center_coord
         
         # Get Beam
         try:
@@ -55,7 +58,7 @@ class SLP():
         # make mask
         wcs = WCS(self.header, naxis = 2)
         if self.center_coord[0] == None:
-            center_x, center_y = (self.img.shape[-2]//2, self.img.shape[-1]//2)
+            center_x, center_y = (self.cube.shape[-2]//2, self.cube.shape[-1]//2)
         else:
             center_x, center_y = wcs.world_to_pixel_values(self.center_coord[0], self.center_coord[1])
         
@@ -129,7 +132,7 @@ class SLP():
         self.stds  = np.array(bootstrap_std)
         self.means = np.array(bootstrap_means)
     
-    def plot(self,outdir):
+    def plot(self,savedir,savenp):
 
         Dfreq    = self.header['CDELT3']
         restfreq = self.header['CRVAL3']
@@ -137,29 +140,25 @@ class SLP():
         xaxis      = (np.arange(len(self.cube))*Dfreq + restfreq)/1e9    
         slp        = np.nansum(self.cube[:, self.mask], axis = 1)
 
+        if savenp:
+            np.save(file = savedir + self.fname.split('/')[-1].replace('.fits', '_slp.npy'), arr =[slp, self.stds])
+
         # Visualize SLP
         # -----------------
-        fig, ax = plt.subplots(2,1, sharex=True, figsize=(8,6), gridspec_kw={'height_ratios': [2, 1]})
+        fig, ax = plt.subplots(1,1, sharex=True, figsize=(7,4))#, gridspec_kw={'height_ratios': [2, 1]})
 
-        ax[0].step(xaxis, slp/self.stds, label = 'Central Beam', c = 'C0')
-        ax[0].axhline(0, c='gray', ls='--')
-        ax[0].set_xlim(xmin = xaxis[0], xmax = xaxis[-1])
-        ax[0].set_ylim(ymin =-2.5, ymax = 3.5)
-        ax[0].set_ylabel('SNR')
-        ax[0].legend(loc = 1, frameon=False)
-        ax[0].axvline(restfreq/1e9, c = 'k')
-
-        ax[1].step(xaxis, self.stds, label='std', c = 'C1')
-        ax[1].set_xlim(xmin = xaxis[0], xmax = xaxis[-1])
-        ax[1].set_ylim(ymin = np.nanmin(self.stds), ymax = np.nanmax(self.stds))
-        ax[1].set_xlabel('Freq [GHz]')
-        ax[1].set_ylabel('mJy')
-        ax[1].legend(loc = 1, frameon=False)
+        ax.step(xaxis, slp, label = 'Central Beam', c = 'C0')
+        ax.step(xaxis, self.stds, label = r'1$\sigma$', c = 'C1', ls =':')
+        ax.step(xaxis, -1*self.stds, c = 'C1', ls =':')
+        ax.axhline(0, c='gray', ls='--')
+        ax.axvline(restfreq/1e9, c = 'k')
+        ax.set_xlim(xmin = xaxis[0], xmax = xaxis[-1])
+        ax.set_ylabel('SNR')
+        ax.legend(loc = 1, frameon=False)
 
         plt.tight_layout()
-        plt.savefig(outdir + self.fname.replace('.fits', '.pdf'), dpi = 300)
+        plt.savefig(savedir + self.fname.split('/')[-1].replace('.fits', '_slp.pdf'), dpi = 300)
         plt.show()
-
 
 class IMAGE():
     def __init__(self,
@@ -187,12 +186,13 @@ class IMAGE():
         if self.moment == 'continuum':
             self.img = np.nanmean(data, axis = 0)*1e3
         elif self.moment == 'moment-0':
-            self.img = np.nansum(data[self.channels[0]:self.channels[1]], axis=0)*1e3
+            dv = self.header['CDELT3']/self.header['CRVAL3'] * c.to(u.km/u.s).value
+            self.img = np.nansum(data[self.channels[0]:self.channels[1]]*dv, axis=0)*1e3
         else:
             raise ValueError(f"Moment does not match available inputs: continuum, or moment-0")
 
     def plot(self,
-              outdir:str = './',
+              savedir:str = './',
               ):
         
         # Get the WCS information from the header
@@ -222,6 +222,7 @@ class IMAGE():
         else:
             box_size_x_pix = self.box_size_arcsec / pix_scale_x
             box_size_y_pix = self.box_size_arcsec / pix_scale_y
+
         
         # Determine the bounding box in pixel coordinates
         x_min = int(center_x - box_size_x_pix / 2)
@@ -247,8 +248,8 @@ class IMAGE():
         # Plot the cropped image with WCS projection
         fig, ax = plt.subplots(subplot_kw={'projection': cropped_wcs}, figsize=(5,4))
         im = ax.imshow(cropped_img, origin='lower', cmap='RdBu_r', vmin = np.nanmin(self.img), vmax = -1*np.nanmin(self.img))
-        ax.set_xlabel('RA (J2000)')
-        ax.set_ylabel('DEC (J2000)')
+        ax.set_xlabel('RA (J2000)', fontsize = 12)
+        ax.set_ylabel('DEC (J2000)', fontsize = 12)
         
         # Plot contours based on the estimated standard deviation
         levels = [-4*std_dev, -3*std_dev, -2*std_dev, -1*std_dev, 1*std_dev, 2*std_dev, 3*std_dev, 4*std_dev]  # Example contour levels
@@ -257,9 +258,9 @@ class IMAGE():
         # Add a colorbar
         cbar = plt.colorbar(im, ax=ax, orientation='vertical')
         if self.moment == 'continuum':
-            cbar.set_label(r'$S_{\nu}$ [mJy/Beam]')
+            cbar.set_label(r'$S_{\nu}$ [mJy/Beam]', fontsize = 12)
         elif self.moment == 'moment-0':
-            cbar.set_label(r'$S_{\nu}$ [mJy/Beam km/s]')
+            cbar.set_label(r'$S_{\nu}$ [mJy/Beam km/s]', fontsize = 12)
 
         # Plot the beam size in the lower right corner
         beam_major_pix = beam_major / pix_scale_x
@@ -269,5 +270,5 @@ class IMAGE():
         ax.add_patch(beam)
         
         plt.tight_layout()
-        plt.savefig(outdir + self.fname.replace('.fits', '.pdf'), dpi = 300)
+        plt.savefig(savedir + self.fname.split('/')[-1].replace('.fits', '_'+self.moment+'.pdf'), dpi = 300)
         plt.show()
