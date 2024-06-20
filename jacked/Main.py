@@ -209,5 +209,5 @@ class Jack:
         else:
             fname = self.outfile + '.fits'
 
-        obj = SLP(fname, size, idx, amount = 4000, visualize=False)
+        obj = SLP(fname, size, idx, amount = 2000, visualize=False)
         obj.plot(savedir = savedir, savenp = savenp)
