@@ -23,6 +23,7 @@ setup(
         'matplotlib',
         'numpy',
         'scipy',
-        'tqdm'
+        'tqdm',
+        'interferopy'
     ]
     )
