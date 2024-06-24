@@ -3,6 +3,6 @@ message: "If you use this software, please cite it as below."
 authors:
 -  given-names: Joshiwa van Marrewijk
 orcid: https://orcid.org/0000-0001-9830-3103
-title:Joshiwavm/jackknify: Release Jackknify 0.1.1
+title:Joshiwavm/jackknify: Release Jackknify 0.3.0
 version: first_release
 date-released: 2024-06-24
