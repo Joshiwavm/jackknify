@@ -134,4 +134,4 @@ output/
 plots/
 docs/notebooks/testing.ipynb
 
-.DS_Store
+*.DS_Store
