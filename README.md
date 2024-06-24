@@ -43,4 +43,4 @@ If you want to run `jackknify` on a Mac with an Apple Silicon chip, run it in a 
 Documentation
 ============
 
-For your convenience, there are notebooks on how to run ``jackknify``. You can find them in the docs/notebooks folder. Also, check out the documentation [here](...).
+For your convenience, there are notebooks on how to run ``jackknify``. You can find them in the docs/notebooks folder. Also, check out the documentation [here](https://joshiwavm.github.io/jackknify/).
