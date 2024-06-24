@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 include-package-data = false
 
 [project]
-name = "jacked"
+name = "jackknify"
 version = "0.1.1"
 authors = [
   { name="Joshiwa van Marrewijk", email="joshiwa01@gmail.com" },
@@ -23,5 +23,5 @@ classifiers = [
 dependencies = ["casatools","casatasks","casdata","interferopy","numpy","scipy","astropy","matplotlib","ipython"]
 
 [project.urls]
-Homepage = "https://github.com/Joshiwavm/jacked"
-Issues = "https://github.com/Joshiwavm/jacked/issues"
+Homepage = "https://github.com/Joshiwavm/jackknify"
+Issues = "https://github.com/Joshiwavm/jackknify/issues"

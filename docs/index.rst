@@ -1,12 +1,12 @@
-.. jacked documentation master file, created by
+.. jackknify documentation master file, created by
    sphinx-quickstart on Tue Jun 18 20:11:29 2024.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to jacked's documentation!
+Welcome to jackknify's documentation!
 ==================================
 
-`jacked` is a Python library used to create noise realizations of radio/mm interferometry data.
+`jackknify` is a Python library used to create noise realizations of radio/mm interferometry data.
 
 The package was developed to make realistic noise maps, which are usefull for feasibillity studies, as to better understand the false likelihood of detecting weak spectral lines. 
 
@@ -21,7 +21,7 @@ To get started, checkout the :doc:`install` page.
    install
    tutorials
 
-Please report any issues on the development page: https://github.com/Joshiwavm/jacked
+Please report any issues on the development page: https://github.com/Joshiwavm/jackknify
 
 
 Acknowledgement
