@@ -1,24 +1,24 @@
 Installation
 ============
 
-`jacked` can be installed with ``pip``:
+`jackknify` can be installed with ``pip``:
 
 .. code-block:: bash
 
-   pip install jacked
+   pip install jackknify
 
 Alternatively, install using GitHub
 
 .. code-block:: bash
 
-    python -m pip install git+https://github.com/Joshiwavm/jacked
+    python -m pip install git+https://github.com/Joshiwavm/jackknify
 
 Or directly from the source
 
 .. code-block:: bash
 
-        git clone https://github.com/Joshiwavm/jacked
-        cd jacked
+        git clone https://github.com/Joshiwavm/jackknify
+        cd jackknify
         pip install -e .
 
-`jacked` runs in python3.6 because it uses ``casatasks`` and ``casatools``
+`jackknify` uses ``casatasks`` and ``casatools``. This might cause a problem, so be wairy. 

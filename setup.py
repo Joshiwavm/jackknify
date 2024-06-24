@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="jackknify", 
-    version="0.1.1",
+    version="0.2.0",
     author="Joshiwa van Marrewijk",
     author_email="joshiwa01@gmail.com",
     description="Jackknifing interferometric datasets",
@@ -18,6 +18,7 @@ setup(
         'astropy',
         'casatasks',
         'casatools',
+        'casadata',
         'jupyterlab',
         'matplotlib',
         'numpy',

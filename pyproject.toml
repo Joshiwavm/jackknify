@@ -20,7 +20,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dependencies = ["casatools","casatasks","casdata","interferopy","numpy","scipy","astropy","matplotlib","ipython"]
+dependencies = ["casatools","casatasks","casadata","interferopy","numpy","scipy","astropy","matplotlib","ipython"]
 
 [project.urls]
 Homepage = "https://github.com/Joshiwavm/jackknify"

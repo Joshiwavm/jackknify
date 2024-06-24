@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to jackknify's documentation!
-==================================
+=====================================
 
 `jackknify` is a Python library used to create noise realizations of radio/mm interferometry data.
 
@@ -26,7 +26,8 @@ Please report any issues on the development page: https://github.com/Joshiwavm/j
 
 Acknowledgement
 ===============
-.
+[![DOI](https://zenodo.org/badge/593247898.svg)](https://zenodo.org/doi/10.5281/zenodo.12516584)
+
 
 Licence
 =======
