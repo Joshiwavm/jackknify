@@ -2,7 +2,7 @@ Jack-knife
 ==========
 [![DOI](https://zenodo.org/badge/593247898.svg)](https://zenodo.org/doi/10.5281/zenodo.12516584)
 
-``jackknify``is a Python-based package that jackknifes ALMA visibilites to create noise realizations from the observations. 
+``jackknify``is a Python-based package that jackknifes ALMA visibilities to create noise realizations from the observations. 
 
 Methodology
 ==========
@@ -31,7 +31,7 @@ or from the source
 
 ## Dependancies
 
-``jackknify`` uses ``casatask`` and ``casatools`` to interface with CASA measurements. ``casatask`` and ``casatools`` requires ``casadata`` to even laod. Sadly, this is a \approx 350 MB sized file. Further, when performing line searches, we make use of the package ``interferopy``, which is a Python-based package for common tasks used in the observational radio/mm interferometry data analysis.
+``jackknify`` uses ``casatask`` and ``casatools`` to interface with CASA measurements. ``casatask`` and ``casatools`` requires ``casadata`` to even load. Sadly, this is a \approx 350 MB sized file. Further, when performing line searches, we make use of the package ``interferopy``, which is a Python-based package for common tasks used in the observational radio/mm interferometry data analysis.
 
 ## Mac 
 
