@@ -21,4 +21,4 @@ Or directly from the source
         cd jackknify
         pip install -e .
 
-`jackknify` uses ``casatasks`` and ``casatools``. This might cause a problem, so be wairy. 
+Just note that, `jackknify` uses ``casatasks`` and ``casatools``. This might cause a problem, so be wairy. 
