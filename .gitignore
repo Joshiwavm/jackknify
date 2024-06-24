@@ -132,6 +132,7 @@ dmypy.json
 data/
 output/
 plots/
+dist/
 docs/notebooks/testing.ipynb
 
-.DS_Store
+*.DS_Store
