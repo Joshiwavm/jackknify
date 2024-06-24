@@ -3,6 +3,7 @@ Jack-knife
 [![DOI](https://zenodo.org/badge/593247898.svg)](https://zenodo.org/doi/10.5281/zenodo.12516584)
 
 ``jackknify``is a Python-based package that jackknifes ALMA visibilities to create noise realizations from the observations. 
+``jackknify``is a Python-based package that jackknifes ALMA visibilities to create noise realizations from the observations. 
 
 Methodology
 ==========
