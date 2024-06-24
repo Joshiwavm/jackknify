@@ -8,4 +8,15 @@ setup(
     description="Jackknifing interferometric datasets",
     long_description_content_type="text/markdown",
     url="https://github.com/Joshiwavm/jacked", 
-    packages=find_packages(),)
+    packages=find_packages(),
+    install_requires = [
+        'astropy',
+        'casatasks',
+        'casatools',
+        'jupyterlab',
+        'matplotlib',
+        'numpy',
+        'scipy',
+        'tqdm'
+    ]
+    )

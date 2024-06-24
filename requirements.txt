@@ -4,8 +4,5 @@ casatools==6.5.1.23
 jupyterlab==3.2.9
 matplotlib==3.3.4
 numpy==1.19.5
-requests==2.27.1
 scipy==1.5.4
 tqdm==4.64.1
-zipp==3.6.0
-pandas==1.1.5
