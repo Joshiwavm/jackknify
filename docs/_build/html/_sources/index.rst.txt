@@ -12,7 +12,7 @@ The package was developed to make realistic noise maps, which are usefull for fe
 
 The package has been tested and used for ALMA data but the technique is broadly applicable to any interferometric data s.
 
-To get started, checkout the :doc:`install` page.
+To get started, check out the :doc:`install` page.
 
 .. toctree::
    :maxdepth: 2
@@ -24,6 +24,23 @@ To get started, checkout the :doc:`install` page.
 Please report any issues on the development page: https://github.com/Joshiwavm/jackknify
 
 
-Acknowledgement
+Acknowledgment
 ===============
-[![DOI](https://zenodo.org/badge/593247898.svg)](https://zenodo.org/doi/10.5281/zenodo.12516584)
+
+If you make use of ``jackknify`` in your work, please cite it as: van Marrewijk & Di Mascolo (2024), using the following BibTeX entry:
+
+.. code-block:: none
+
+   @software{joshiwa_van_marrewijk_2024_12516585,
+     author       = {Joshiwa van Marrewijk and
+                     Luca Di Mascolo},
+     title        = {Joshiwavm/jackknify: Release Jackknify 0.3.0},
+     month        = jun,
+     year         = 2024,
+     publisher    = {Zenodo},
+     version      = {first\_release},
+     doi          = {10.5281/zenodo.12516585},
+     url          = {https://doi.org/10.5281/zenodo.12516585}
+   }
+
+
