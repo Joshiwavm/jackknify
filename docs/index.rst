@@ -27,13 +27,14 @@ Please report any issues on the development page: https://github.com/Joshiwavm/j
 Acknowledgment
 ===============
 
-If you make use of ``jackknify`` in your work, please cite it as: van Marrewijk (2024), using the following BibTeX entry:
+If you make use of ``jackknify`` in your work, please cite it as: van Marrewijk & Di Mascolo (2024), using the following BibTeX entry:
 
 .. code-block:: none
+
    @software{joshiwa_van_marrewijk_2024_12516585,
      author       = {Joshiwa van Marrewijk and
                      Luca Di Mascolo},
-     title        = {Joshiwavm/jackknify: Release Jackknify 0.1.1},
+     title        = {Joshiwavm/jackknify: Release Jackknify 0.3.0},
      month        = jun,
      year         = 2024,
      publisher    = {Zenodo},
