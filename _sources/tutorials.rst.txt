@@ -4,6 +4,6 @@ Tutorials
 .. toctree::
    :maxdepth: 2
 
-   notebooks/HowToJackknife.ipynb
-   notebooks/HowToVisualize.ipynb
-   notebooks/HowToLineFind.ipynb
+   notebooks/HowToJackknife
+   notebooks/HowToVisualize
+   notebooks/HowToLineFind
