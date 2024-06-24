@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = false
+
+[project]
+name = "jacked"
+version = "0.1.0"
+authors = [
+  { name="Joshiwa van Marrewijk", email="joshiwa01@gmail.com" },
+]
+description = "A python-based package that jackknifes ALMA visibillites to create noise realizations of the observations."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT License" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = ["casatools","casatasks","interferopy","numpy","scipy","astropy","matplotlib"]
+
+[project.urls]
+Homepage = "https://github.com/Joshiwavm/jacked"
+Issues = "https://github.com/Joshiwavm/jacked/issues"
