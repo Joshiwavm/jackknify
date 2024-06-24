@@ -26,6 +26,7 @@ Please report any issues on the development page: https://github.com/Joshiwavm/j
 
 Acknowledgment
 ===============
+
 If you make use of ``jackknify`` in your work, please cite it as: van Marrewijk (2024), using the following BibTeX entry::
    @software{joshiwa_van_marrewijk_2024_12516585,
      author       = {Joshiwa van Marrewijk and
