@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>How to: &#8212; jackknify 0.2.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b1f64a84"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="How to:" href="HowToVisualize.html" />
+    <link rel="prev" title="Tutorials" href="../tutorials.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="How-to:">
+<h1>How to:<a class="headerlink" href="#How-to:" title="Permalink to this heading">¶</a></h1>
+<section id="Jackknife-Measurement-Sets">
+<h2>Jackknife Measurement Sets<a class="headerlink" href="#Jackknife-Measurement-Sets" title="Permalink to this heading">¶</a></h2>
+<p>This tutorial explains how to jackknife measurement sets (ms-files), particularly for ALMA data, to create observation-specific noise realizations. We will use the <code class="docutils literal notranslate"><span class="pre">jacked</span></code> package to handle ms-files, split them, and image the visibilities.</p>
+<section id="Step-1:-Download-Example-Data">
+<h3>Step 1: Download Example Data<a class="headerlink" href="#Step-1:-Download-Example-Data" title="Permalink to this heading">¶</a></h3>
+<p>First, download an example measurement set from <a class="reference external" href="https://drive.google.com/file/d/11933cHM2kpqRG_E2BdlQ81FHRWmyye3i/view?usp=sharing">this link</a>. After downloading, unzip the file and note the directory where you store it for future reference.</p>
+</section>
+<section id="Step-2:-Initializing">
+<h3>Step 2: Initializing<a class="headerlink" href="#Step-2:-Initializing" title="Permalink to this heading">¶</a></h3>
+<p>To start using the <code class="docutils literal notranslate"><span class="pre">jacked</span></code> package, we need to initialize the measurement set so that <code class="docutils literal notranslate"><span class="pre">jacked</span></code> can interface with CASA.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jackknify</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#initilaize</span>
+<span class="n">tool</span> <span class="o">=</span> <span class="n">jackknify</span><span class="o">.</span><span class="n">Jack</span><span class="p">(</span><span class="n">fname</span>   <span class="o">=</span> <span class="s1">&#39;../../data/Glass-z13.ms&#39;</span><span class="p">,</span> <span class="c1"># The file name of the visibilities,</span>
+                   <span class="n">outdir</span>  <span class="o">=</span> <span class="s1">&#39;../../output/&#39;</span><span class="p">,</span> <span class="c1">#the directory to save the outputs in</span>
+                   <span class="n">fields</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;3&#39;</span><span class="p">],</span> <span class="c1"># Each visibility can have multiple fields,</span>
+                   <span class="n">spws</span>    <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;0&#39;</span><span class="p">]],</span> <span class="c1"># and each field can have multiple spws,</span>
+                   <span class="n">band</span>    <span class="o">=</span> <span class="s1">&#39;Band7&#39;</span><span class="p">,</span> <span class="c1"># Band of the observation,</span>
+                   <span class="n">array</span>   <span class="o">=</span> <span class="s1">&#39;C7&#39;</span><span class="p">,</span> <span class="c1"># which configuration the observation are taken in,</span>
+                   <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Step-3:-Create-a-Jackknifed-Measurement-Set">
+<h3>Step 3: Create a Jackknifed Measurement Set<a class="headerlink" href="#Step-3:-Create-a-Jackknifed-Measurement-Set" title="Permalink to this heading">¶</a></h3>
+<p>To create a jackknifed measurement set, simply run the following code. This will generate the jackknifed measurement set, which you can then use for further analysis or imaging.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tool</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">seed</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+  0%|          | 0/1 [00:00&lt;?, ?it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+.. Loading in MS
+.. Jack Knife it
+.. Saving to MS
+.. Image
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 1/1 [08:52&lt;00:00, 532.64s/it]
+</pre></div></div>
+</div>
+<p>Want another one? Just run it again, but with another seed:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tool</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">seed</span> <span class="o">=</span> <span class="mi">142</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+  0%|          | 0/1 [00:00&lt;?, ?it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+.. Loading in MS
+.. Jack Knife it
+.. Saving to MS
+.. Image
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 1/1 [11:58&lt;00:00, 718.84s/it]
+</pre></div></div>
+</div>
+</section>
+<section id="Step-4:-Multiple-runs">
+<h3>Step 4: Multiple runs<a class="headerlink" href="#Step-4:-Multiple-runs" title="Permalink to this heading">¶</a></h3>
+<p>If you want multiple simulatiously, just run the following. This automatically increments the seeding.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tool</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">samples</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">seed</span> <span class="o">=</span> <span class="mi">242</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+ 67%|██████▋   | 2/3 [22:19&lt;11:04, 664.68s/it]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+.. Loading in MS
+.. Jack Knife it
+.. Saving to MS
+.. Image
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 3/3 [31:29&lt;00:00, 629.82s/it]
+</pre></div></div>
+</div>
+<p>Now you are all done! You have five new noise realizations of your observation, all stored in the output directory.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">jackknify</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">How to:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HowToVisualize.html">How to:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HowToLineFind.html">How to:</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../tutorials.html">Tutorials</a><ul>
+      <li>Previous: <a href="../tutorials.html" title="previous chapter">Tutorials</a></li>
+      <li>Next: <a href="HowToVisualize.html" title="next chapter">How to:</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2024, Joshiwa van Marrewijk.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/notebooks/HowToJackknife.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
