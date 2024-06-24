@@ -34,9 +34,10 @@ or from the source
 
 ## Mac 
 
-If you want to run `jacked` on a Mac that has an Apple Silicon chip, run it in a Rosetta terminal. To do this, just run:
+If you want to run `jacked` on a Mac with an Apple Silicon chip, run it in a Rosetta terminal. To open a Rosetta session in your terminal, run:
     
     /usr/bin/arch -x86_64 /bin/zsh --login
+
 
 Documentation
 ============
