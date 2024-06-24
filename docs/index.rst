@@ -27,8 +27,3 @@ Please report any issues on the development page: https://github.com/Joshiwavm/j
 Acknowledgement
 ===============
 [![DOI](https://zenodo.org/badge/593247898.svg)](https://zenodo.org/doi/10.5281/zenodo.12516584)
-
-
-Licence
-=======
-MIT License, Copyright (c) 2021 Leindert Boogaard, Romain Meyer, Mladen Novak
