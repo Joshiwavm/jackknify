@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="How to: Visualize Jackknifed Measurement Sets" href="HowToVisualize.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.05.06 -->
-        <title>How to: Use jacked for line finding. - jackknify 0.3.0 documentation</title>
+        <title>How to: Use jackknify for line finding. - jackknify documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
@@ -180,7 +180,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">jackknify 0.3.0 documentation</div></a>
+      <a href="../index.html"><div class="brand">jackknify documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -204,7 +204,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">jackknify 0.3.0 documentation</span>
+  <span class="sidebar-brand-text">jackknify documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -218,7 +218,7 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../tutorials.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="HowToJackknife.html">How to: Jackknife Measurement Sets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="HowToVisualize.html">How to: Visualize Jackknifed Measurement Sets</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">How to: Use <code class="docutils literal notranslate"><span class="pre">jacked</span></code> for line finding.</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">How to: Use <code class="docutils literal notranslate"><span class="pre">jackknify</span></code> for line finding.</a></li>
 </ul>
 </li>
 </ul>
@@ -261,10 +261,10 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="How-to:-Use-jacked-for-line-finding.">
-<h1>How to: Use <code class="docutils literal notranslate"><span class="pre">jacked</span></code> for line finding.<a class="headerlink" href="#How-to:-Use-jacked-for-line-finding." title="Permalink to this heading">¶</a></h1>
-<p><code class="docutils literal notranslate"><span class="pre">jacked</span></code> can be used in a variaty of ways. Here, we show how to use the jackknifed data sets for inference of a line detection. According to JWST data, In the ALMA data we have been working with, there should be [OIII] emission coming from a galaxy which some 14 Billion light years away. Let’s see if we can find it, or if it is undistinguishable from noise.</p>
-<p>The line finding is done with a code named <a class="reference external" href="https://www.astromatic.net/software/sextractor/">Source EXtractor</a>. Source extractor is integrated in a Python interface through the <code class="docutils literal notranslate"><span class="pre">`Interferopy</span></code> package &lt;<a class="reference external" href="https://interferopy.readthedocs.io/en/latest/">https://interferopy.readthedocs.io/en/latest/</a>&gt;`__. Sadly, Interferopy is restricts the usage of Python version (&gt;3.6 and &lt;3.10), meaning we can’t integrate it with <code class="docutils literal notranslate"><span class="pre">jacked</span></code> since <code class="docutils literal notranslate"><span class="pre">jacked</span></code> works in the visibillity plane, therefore it needs to use the package <code class="docutils literal notranslate"><span class="pre">casatasks</span></code> which limits the
+          <section id="How-to:-Use-jackknify-for-line-finding.">
+<h1>How to: Use <code class="docutils literal notranslate"><span class="pre">jackknify</span></code> for line finding.<a class="headerlink" href="#How-to:-Use-jackknify-for-line-finding." title="Permalink to this heading">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">jackknify</span></code> can be used in a variaty of ways. Here, we show how to use the jackknifed data sets for inference of a line detection. According to JWST data, In the ALMA data we have been working with, there should be [OIII] emission coming from a galaxy which some 14 Billion light years away. Let’s see if we can find it, or if it is undistinguishable from noise.</p>
+<p>The line finding is done with a code named <a class="reference external" href="https://www.astromatic.net/software/sextractor/">Source EXtractor</a>. Source extractor is integrated in a Python interface through the <code class="docutils literal notranslate"><span class="pre">`Interferopy</span></code> package &lt;<a class="reference external" href="https://interferopy.readthedocs.io/en/latest/">https://interferopy.readthedocs.io/en/latest/</a>&gt;`__. Sadly, Interferopy is restricts the usage of Python version (&gt;3.6 and &lt;3.10), meaning we can’t integrate it with <code class="docutils literal notranslate"><span class="pre">jackknify</span></code> since <code class="docutils literal notranslate"><span class="pre">jackknify</span></code> works in the visibillity plane, therefore it needs to use the package <code class="docutils literal notranslate"><span class="pre">casatasks</span></code> which limits the
 Python version to Python=3.6. Therefore, we ran the linefinding seperately, but you can you find the output catalogs also on the <a class="reference external" href="https://drive.google.com/file/d/1FlQNwy7VtAk0zcFfdW5tMY2aGKivxlyR/view?usp=sharing">google drive</a> and the script we used to generate the outputs in the same folder as the tutorials.</p>
 <p>Let’s first load in everythinbg.</p>
 <section id="Load-in">
@@ -362,7 +362,7 @@ Python version to Python=3.6. Therefore, we ran the linefinding seperately, but 
 </div>
 <section id="Plot-sampled-probabillity-functions">
 <h3>Plot sampled probabillity functions<a class="headerlink" href="#Plot-sampled-probabillity-functions" title="Permalink to this heading">¶</a></h3>
-<p>As explained in <a class="reference external" href="https://arxiv.org/abs/1602.02392">Vio &amp; Andreani 2016</a>, the underlying distribution that sets the likelihood of false detection is the distribution of peaks of a smoothed (close to) Gaussian random field. With the jackedknifed measurment sets we effectively resample this distribution. This is more complete and more acurately than, for isntance, using the distribution of negative peak values as used in <a class="reference external" href="https://arxiv.org/abs/1607.06768">Walter+2016</a>.</p>
+<p>As explained in <a class="reference external" href="https://arxiv.org/abs/1602.02392">Vio &amp; Andreani 2016</a>, the underlying distribution that sets the likelihood of false detection is the distribution of peaks of a smoothed (close to) Gaussian random field. With the jackknifed measurment sets we effectively resample this distribution. This is more complete and more acurately than, for isntance, using the distribution of negative peak values as used in <a class="reference external" href="https://arxiv.org/abs/1607.06768">Walter+2016</a>.</p>
 </section>
 </section>
 <section id="Comparing-the-two-noise-distribution">
@@ -661,12 +661,12 @@ having at least one peak above the detection threshold of <span class="math notr
 <img alt="../_images/notebooks_HowToLineFind_26_1.png" src="../_images/notebooks_HowToLineFind_26_1.png" />
 </div>
 </div>
-<p>Let’s show the moment-0 map according to the most likeli peak. For this we will use the build in Jacked tools</p>
+<p>Let’s show the moment-0 map according to the most likeli peak. For this we will use the build in jackknify tools</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jacked</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jackknify</span>
 </pre></div>
 </div>
 </div>
@@ -675,7 +675,7 @@ having at least one peak above the detection threshold of <span class="math notr
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#initilaize</span>
-<span class="n">tool</span> <span class="o">=</span> <span class="n">jacked</span><span class="o">.</span><span class="n">Jack</span><span class="p">(</span><span class="n">fname</span>   <span class="o">=</span> <span class="s1">&#39;../../data/Glass-z13.ms&#39;</span><span class="p">,</span> <span class="c1"># The file name of the visibilities,</span>
+<span class="n">tool</span> <span class="o">=</span> <span class="n">jackknify</span><span class="o">.</span><span class="n">Jack</span><span class="p">(</span><span class="n">fname</span>   <span class="o">=</span> <span class="s1">&#39;../../data/Glass-z13.ms&#39;</span><span class="p">,</span> <span class="c1"># The file name of the visibilities,</span>
                    <span class="n">outdir</span>  <span class="o">=</span> <span class="s1">&#39;../../output/&#39;</span><span class="p">,</span> <span class="c1">#the directory to save the outputs in</span>
                    <span class="n">fields</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;3&#39;</span><span class="p">],</span> <span class="c1"># Each visibility can have multiple fields,</span>
                    <span class="n">spws</span>    <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;0&#39;</span><span class="p">]],</span> <span class="c1"># and each field can have multiple spws,</span>
@@ -763,7 +763,7 @@ Set OBSGEO-H to     5053.796 from OBSGEO-[XYZ]&#39;. [astropy.wcs.wcs]
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">How to: Use <code class="docutils literal notranslate"><span class="pre">jacked</span></code> for line finding.</a><ul>
+<li><a class="reference internal" href="#">How to: Use <code class="docutils literal notranslate"><span class="pre">jackknify</span></code> for line finding.</a><ul>
 <li><a class="reference internal" href="#Load-in">Load in</a><ul>
 <li><a class="reference internal" href="#Plot-sampled-probabillity-functions">Plot sampled probabillity functions</a></li>
 </ul>

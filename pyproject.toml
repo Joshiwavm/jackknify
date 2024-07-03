@@ -7,7 +7,7 @@ include-package-data = false
 
 [project]
 name = "jackknify"
-version = "0.3.0"
+version = "1.0.0"
 authors = [
   { name="Joshiwa van Marrewijk", email="joshiwa01@gmail.com" },
 ]
@@ -20,7 +20,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dependencies = ["casatools","casatasks","casadata","interferopy","numpy","scipy","astropy","matplotlib","ipython"]
+dependencies = ["casatools","casatasks","casadata","interferopy","numpy","scipy","astropy","matplotlib","ipython","tqdm"]
 
 [project.urls]
 Homepage = "https://github.com/Joshiwavm/jackknify"

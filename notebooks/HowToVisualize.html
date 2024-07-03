@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How to: Use jacked for line finding." href="HowToLineFind.html" /><link rel="prev" title="How to: Jackknife Measurement Sets" href="HowToJackknife.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How to: Use jackknify for line finding." href="HowToLineFind.html" /><link rel="prev" title="How to: Jackknife Measurement Sets" href="HowToJackknife.html" />
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.05.06 -->
-        <title>How to: Visualize Jackknifed Measurement Sets - jackknify 0.3.0 documentation</title>
+        <title>How to: Visualize Jackknifed Measurement Sets - jackknify documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=387cc868" />
     <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
@@ -180,7 +180,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">jackknify 0.3.0 documentation</div></a>
+      <a href="../index.html"><div class="brand">jackknify documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -204,7 +204,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">jackknify 0.3.0 documentation</span>
+  <span class="sidebar-brand-text">jackknify documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -218,7 +218,7 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../tutorials.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="HowToJackknife.html">How to: Jackknife Measurement Sets</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">How to: Visualize Jackknifed Measurement Sets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="HowToLineFind.html">How to: Use <code class="docutils literal notranslate"><span class="pre">jacked</span></code> for line finding.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HowToLineFind.html">How to: Use <code class="docutils literal notranslate"><span class="pre">jackknify</span></code> for line finding.</a></li>
 </ul>
 </li>
 </ul>
@@ -269,7 +269,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jacked</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jackknify</span>
 </pre></div>
 </div>
 </div>
@@ -278,7 +278,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#initilaize</span>
-<span class="n">tool</span> <span class="o">=</span> <span class="n">jacked</span><span class="o">.</span><span class="n">Jack</span><span class="p">(</span><span class="n">fname</span>   <span class="o">=</span> <span class="s1">&#39;../../data/Glass-z13.ms&#39;</span><span class="p">,</span> <span class="c1"># The file name of the visibilities,</span>
+<span class="n">tool</span> <span class="o">=</span> <span class="n">jackknify</span><span class="o">.</span><span class="n">Jack</span><span class="p">(</span><span class="n">fname</span>   <span class="o">=</span> <span class="s1">&#39;../../data/Glass-z13.ms&#39;</span><span class="p">,</span> <span class="c1"># The file name of the visibilities,</span>
                    <span class="n">outdir</span>  <span class="o">=</span> <span class="s1">&#39;../../output/&#39;</span><span class="p">,</span> <span class="c1">#the directory to save the outputs in</span>
                    <span class="n">fields</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;3&#39;</span><span class="p">],</span> <span class="c1"># Each visibility can have multiple fields,</span>
                    <span class="n">spws</span>    <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;0&#39;</span><span class="p">]],</span> <span class="c1"># and each field can have multiple spws,</span>
@@ -290,7 +290,7 @@
 </div>
 <section id="Input-Data">
 <h2>Input Data<a class="headerlink" href="#Input-Data" title="Permalink to this heading">¶</a></h2>
-<p>In the previous notebook, we used the <code class="docutils literal notranslate"><span class="pre">tool.run(fname)</span></code> function to run the entire <code class="docutils literal notranslate"><span class="pre">jacked</span></code> pipeline. However, we can also call submodules to image the input data separately. Let’s image the original dataset in the same way as we do for the jackknifed data to get a better understanding of the differences. We weill both show a continuum map and a moment-0 map. The moment-0 map is collapsed over the channels to reproduce the results of <a class="reference external" href="https://arxiv.org/abs/2403.10491">Zavala+2024</a>.</p>
+<p>In the previous notebook, we used the <code class="docutils literal notranslate"><span class="pre">tool.run(fname)</span></code> function to run the entire <code class="docutils literal notranslate"><span class="pre">jackknify</span></code> pipeline. However, we can also call submodules to image the input data separately. Let’s image the original dataset in the same way as we do for the jackknifed data to get a better understanding of the differences. We weill both show a continuum map and a moment-0 map. The moment-0 map is collapsed over the channels to reproduce the results of <a class="reference external" href="https://arxiv.org/abs/2403.10491">Zavala+2024</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -646,7 +646,7 @@ Set OBSGEO-H to     5053.796 from OBSGEO-[XYZ]&#39;. [astropy.wcs.wcs]
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">How to: Use <code class="docutils literal notranslate"><span class="pre">jacked</span></code> for line finding.</div>
+                <div class="title">How to: Use <code class="docutils literal notranslate"><span class="pre">jackknify</span></code> for line finding.</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
