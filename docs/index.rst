@@ -8,9 +8,9 @@ Welcome to jackknify's documentation!
 
 `jackknify` is a Python library used to create noise realizations of radio/mm interferometry data.
 
-The package was developed to make realistic noise maps, which are usefull for feasibillity studies, as to better understand the false likelihood of detecting weak spectral lines. 
+The package was developed to make realistic noise maps, which are usefull for feasibility studies, as to better understand the false likelihood of detecting weak spectral lines. 
 
-The package has been tested and used for ALMA data but the technique is broadly applicable to any interferometric data s.
+The package has been tested and used for ALMA data but the technique is broadly applicable to any interferometric data.
 
 To get started, check out the :doc:`install` page.
 
@@ -21,7 +21,7 @@ To get started, check out the :doc:`install` page.
    install
    tutorials
 
-Please report any issues on the development page: https://github.com/Joshiwavm/jackknify
+Please report any issues on the development page: https://github.com/Joshiwavm/jackknify/issues
 
 
 Acknowledgment
