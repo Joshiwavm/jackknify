@@ -1,6 +1,9 @@
 Jack-knife
 ==========
 [![DOI](https://zenodo.org/badge/593247898.svg)](https://zenodo.org/doi/10.5281/zenodo.12516584)
+[![Docs](https://img.shields.io/badge/docs-v1.0.0-2ea44f)](https://joshiwavm.github.io/jackknify/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 ``jackknify``is a Python-based package that jackknifes ALMA visibilities to create noise realizations from the observations. 
 
