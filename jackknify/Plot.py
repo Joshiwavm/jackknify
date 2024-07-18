@@ -89,7 +89,7 @@ class SLP():
         x = self.CoM_mask[0] + self.cube.shape[1]/3 *r* np.cos(theta) #hard coded
         y = self.CoM_mask[1] + self.cube.shape[1]/3 *r* np.sin(theta) #hard coded
         
-        pos = np.array([x,y], dtype = np.int).T
+        pos = np.array([x,y], dtype = int).T
         return np.vstack(([int(self.CoM_mask[0]), int(self.CoM_mask[1])], pos))
 
     def _make_mask(self, pos):
