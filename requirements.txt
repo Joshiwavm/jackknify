@@ -7,4 +7,3 @@ matplotlib
 numpy
 scipy
 tqdm
-interferopy

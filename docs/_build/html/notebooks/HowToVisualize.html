@@ -2,15 +2,15 @@
 <html class="no-js" lang="en" data-content_root="">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How to: Use jacked for line finding." href="HowToLineFind.html" /><link rel="prev" title="How to: Jackknife Measurement Sets" href="HowToJackknife.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="How to: Use jackknify for line finding." href="HowToLineFind.html" /><link rel="prev" title="How to: Jackknife Measurement Sets" href="HowToJackknife.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.05.06 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.07.18 -->
         <title>How to: Visualize Jackknifed Measurement Sets - jackknify 0.3.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=387cc868" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=362ab14a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=613ab9ff" />
     <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
     
     
 
@@ -89,19 +89,6 @@
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
-    </svg>
-  </symbol>
   <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
     <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -142,7 +129,7 @@
       <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
       <path d="M13.5 6.5l4 4" />
       <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" /
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
   <symbol id="svg-eye" viewBox="0 0 24 24">
@@ -218,7 +205,7 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../tutorials.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="HowToJackknife.html">How to: Jackknife Measurement Sets</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">How to: Visualize Jackknifed Measurement Sets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="HowToLineFind.html">How to: Use <code class="docutils literal notranslate"><span class="pre">jacked</span></code> for line finding.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HowToLineFind.html">How to: Use <code class="docutils literal notranslate"><span class="pre">jackknify</span></code> for line finding.</a></li>
 </ul>
 </li>
 </ul>
@@ -269,7 +256,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jacked</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jackknify</span>
 </pre></div>
 </div>
 </div>
@@ -278,19 +265,19 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#initilaize</span>
-<span class="n">tool</span> <span class="o">=</span> <span class="n">jacked</span><span class="o">.</span><span class="n">Jack</span><span class="p">(</span><span class="n">fname</span>   <span class="o">=</span> <span class="s1">&#39;../../data/Glass-z13.ms&#39;</span><span class="p">,</span> <span class="c1"># The file name of the visibilities,</span>
-                   <span class="n">outdir</span>  <span class="o">=</span> <span class="s1">&#39;../../output/&#39;</span><span class="p">,</span> <span class="c1">#the directory to save the outputs in</span>
-                   <span class="n">fields</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;3&#39;</span><span class="p">],</span> <span class="c1"># Each visibility can have multiple fields,</span>
-                   <span class="n">spws</span>    <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;0&#39;</span><span class="p">]],</span> <span class="c1"># and each field can have multiple spws,</span>
-                   <span class="n">band</span>    <span class="o">=</span> <span class="s1">&#39;Band7&#39;</span><span class="p">,</span> <span class="c1"># Band of the observation,</span>
-                   <span class="n">array</span>   <span class="o">=</span> <span class="s1">&#39;C7&#39;</span><span class="p">,</span> <span class="c1"># which configuration the observation are taken in,</span>
-                   <span class="p">)</span>
+<span class="n">tool</span> <span class="o">=</span> <span class="n">jackknify</span><span class="o">.</span><span class="n">Jack</span><span class="p">(</span><span class="n">fname</span>   <span class="o">=</span> <span class="s1">&#39;../../data/Glass-z13.ms&#39;</span><span class="p">,</span> <span class="c1"># The file name of the visibilities,</span>
+                      <span class="n">outdir</span>  <span class="o">=</span> <span class="s1">&#39;../../output/&#39;</span><span class="p">,</span> <span class="c1">#the directory to save the outputs in</span>
+                      <span class="n">fields</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;3&#39;</span><span class="p">],</span> <span class="c1"># Each visibility can have multiple fields,</span>
+                      <span class="n">spws</span>    <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;0&#39;</span><span class="p">]],</span> <span class="c1"># and each field can have multiple spws,</span>
+                      <span class="n">band</span>    <span class="o">=</span> <span class="s1">&#39;Band7&#39;</span><span class="p">,</span> <span class="c1"># Band of the observation,</span>
+                      <span class="n">array</span>   <span class="o">=</span> <span class="s1">&#39;C7&#39;</span><span class="p">,</span> <span class="c1"># which configuration the observation are taken in,</span>
+                      <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <section id="Input-Data">
 <h2>Input Data<a class="headerlink" href="#Input-Data" title="Permalink to this heading">¶</a></h2>
-<p>In the previous notebook, we used the <code class="docutils literal notranslate"><span class="pre">tool.run(fname)</span></code> function to run the entire <code class="docutils literal notranslate"><span class="pre">jacked</span></code> pipeline. However, we can also call submodules to image the input data separately. Let’s image the original dataset in the same way as we do for the jackknifed data to get a better understanding of the differences. We weill both show a continuum map and a moment-0 map. The moment-0 map is collapsed over the channels to reproduce the results of <a class="reference external" href="https://arxiv.org/abs/2403.10491">Zavala+2024</a>.</p>
+<p>In the previous notebook, we used the <code class="docutils literal notranslate"><span class="pre">tool.run(fname)</span></code> function to run the entire <code class="docutils literal notranslate"><span class="pre">jackknify</span></code> pipeline. However, we can also call submodules to image the input data separately. Let’s image the original dataset in the same way as we do for the jackknifed data to get a better understanding of the differences. We weill both show a continuum map and a moment-0 map. The moment-0 map is collapsed over the channels to reproduce the results of <a class="reference external" href="https://arxiv.org/abs/2403.10491">Zavala+2024</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -385,7 +372,7 @@ module.</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tool</span><span class="o">.</span><span class="n">outfile</span> <span class="o">=</span> <span class="s1">&#39;../../output/cubes/Glass-z13_Jacked_seed42.im&#39;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tool</span><span class="o">.</span><span class="n">outfile</span> <span class="o">=</span> <span class="s1">&#39;../../output/cubes/Glass-z13_jackknify_seed42.im&#39;</span>
 <span class="n">tool</span><span class="o">.</span><span class="n">plot_map</span><span class="p">(</span><span class="n">savedir</span> <span class="o">=</span> <span class="s1">&#39;../../plots/&#39;</span><span class="p">,</span> <span class="n">moment</span> <span class="o">=</span> <span class="s1">&#39;continuum&#39;</span><span class="p">)</span>
 <span class="n">tool</span><span class="o">.</span><span class="n">plot_map</span><span class="p">(</span><span class="n">savedir</span> <span class="o">=</span> <span class="s1">&#39;../../plots/&#39;</span><span class="p">,</span> <span class="n">moment</span> <span class="o">=</span> <span class="s1">&#39;moment-0&#39;</span><span class="p">,</span> <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span><span class="mi">23</span><span class="p">],</span> <span class="n">box_size_arcsec</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">center_coord</span><span class="o">=</span><span class="p">(</span><span class="mf">3.498985</span><span class="p">,</span> <span class="o">-</span><span class="mf">30.324767</span><span class="p">))</span>
 <span class="n">tool</span><span class="o">.</span><span class="n">plot_slp</span><span class="p">(</span><span class="n">savedir</span> <span class="o">=</span> <span class="s1">&#39;../../plots/&#39;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">3</span><span class="o">/</span><span class="mf">2.355</span><span class="p">,</span> <span class="n">savenp</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
@@ -646,7 +633,7 @@ Set OBSGEO-H to     5053.796 from OBSGEO-[XYZ]&#39;. [astropy.wcs.wcs]
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">How to: Use <code class="docutils literal notranslate"><span class="pre">jacked</span></code> for line finding.</div>
+                <div class="title">How to: Use <code class="docutils literal notranslate"><span class="pre">jackknify</span></code> for line finding.</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -708,7 +695,7 @@ Set OBSGEO-H to     5053.796 from OBSGEO-[XYZ]&#39;. [astropy.wcs.wcs]
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=c02300dd"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

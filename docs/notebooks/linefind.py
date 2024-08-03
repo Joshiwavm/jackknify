@@ -18,10 +18,10 @@ for fname in fits_files:
     
     cube = Cube(direc + fname)
     _ = cube.findclumps_full(output_file=outrun + 'findlcumps',
-                        kernels=np.arange(3, 11, 2),
-                        SNR_min=-2,                                               
-                        delta_offset_arcsec=0.5,
-                        delta_freq=0.4,
+                        kernels=np.arange(5, 22, 2),
+                        SNR_min=0,                                               
+                        delta_offset_arcsec=0.2, 
+                        delta_freq=0.1,
 
                         run_search=True,
                         run_crop=True,
@@ -29,4 +29,4 @@ for fname in fits_files:
 
                         verbose=True,
                         sextractor_param_file='default.sex',
-                        ncores=3)
+                        ncores=4)
