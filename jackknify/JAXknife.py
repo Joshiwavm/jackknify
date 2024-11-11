@@ -10,7 +10,6 @@ def run(xw,yw,dw,w,csize,rng):
     flips[:xw.shape[0]//2] = -1.00
     rng.shuffle(flips)
     
-    print(dw.shape,xw.shape)
     return image(xw,yw,dw*flips,w,csize)
 
 def image(x,y,c,w,csize):
