@@ -144,6 +144,11 @@ class Jack:
         os.system('rm -rf {0}.residual'.format(self.outfile))
         os.system('rm -rf {0}.image'.format(self.outfile))
         os.system('rm -rf {0}.sumwt'.format(self.outfile))
+
+    def knife(self,
+              samples: int = 1,
+              seed: int = 42):
+        return self.run(samples,seed)
     
     def run(self, 
             samples: int = 1,
