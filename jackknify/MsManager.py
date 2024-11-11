@@ -65,14 +65,14 @@ class MSmanager:
                 vwave  = vwave.flatten()
                                 
                 uvwght = (shapes*uvwght.reshape(1,-1)).flatten()
-              
+
                 uvdist  = np.append(uvdist, (uwave**2 + vwave**2)**0.5*1e-3)
                 UVreal  = np.append(UVreal,  uvreal)
                 UVimag  = np.append(UVimag,  uvimag)
                 uvwghts = np.append(uvwghts, uvwght)
-                us      = np.append(us, u) 
-                vs      = np.append(vs, v)
-
+                us      = np.append(us, uwave) 
+                vs      = np.append(vs, vwave)
+    
         return uvdist, UVreal, UVimag, uvwghts, us, vs
     
     def model_to_ms(self, model, sigma = None):
