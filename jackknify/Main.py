@@ -8,6 +8,8 @@ from .ImSettings import *
 from .MsManager import MSmanager
 from .Plot import SLP, IMAGE
 
+from . import JAXknife
+
 class Jack:
     def __init__(self, 
                  fname: str, 
@@ -142,7 +144,12 @@ class Jack:
         os.system('rm -rf {0}.residual'.format(self.outfile))
         os.system('rm -rf {0}.image'.format(self.outfile))
         os.system('rm -rf {0}.sumwt'.format(self.outfile))
-        
+
+    def knife(self,
+              samples: int = 1,
+              seed: int = 42):
+        return self.run(samples,seed)
+    
     def run(self, 
             samples: int = 1,
             seed: int = 42
@@ -164,6 +171,31 @@ class Jack:
                     
             os.system('rm -vf *.last')
             os.system('rm -vf *.log')
+
+            if i != samples-1:
+                clear_output(True)
+
+    def gofast(self,
+               samples: int = 1,
+               seed: int = 42):
+        print('.. Loading in MS')
+        _, UVreal, UVimag, UVwgts, uw, vw = self.manager.uvdata_loader()
+        
+        rng = np.random.default_rng(seed=seed)
+
+        cdelt = np.deg2rad(self.imcase.cellsize/3.60E+03)
+        xw = -2.00*np.pi*vw*cdelt
+        yw =  2.00*np.pi*uw*cdelt
+
+        print('.. Running JAXknife')
+        for i in tqdm.tqdm(range(0,samples,1)):
+            img = JAXknife.run(xw,yw,UVreal+1j*UVimag,UVwgts,self.imcase.imsize,rng)
+
+            os.system(f'mkdir -p {self.outdir}jaxknife/')
+            outpath = self.vis_jacked.split('/')[-1]
+            outpath = f'{self.outdir}jaxknife/{outpath}_jax_samp_{i:05d}'
+
+            np.savez_compressed(outpath,img)
 
             if i != samples-1:
                 clear_output(True)
