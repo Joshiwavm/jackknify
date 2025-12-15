@@ -12,7 +12,7 @@ Methodology
 
 Jackknifing is a simple but effective tool to characterize the underlying noise distribution of any type of data set. This tool specifically is implemented for interferometric data. ``jackknify`` splits half the visibilities randomly in two subsets, then multiplies one half with -1 so that when the data is binned, any signal present in the data is averaged out. This creates observation-specific noise realization of the data, which can be used to for instance, sample the likelihood a false detection. 
 
-The full methodology can be found [here](https://arxiv.org/abs/2210.03754) and in an upcoming paper, which is still in preparation. 
+The full methodology can be found [here](https://ui.adsabs.harvard.edu/abs/2025A%26A...695A.204V/abstract) and is also used in [this work](https://arxiv.org/abs/2210.03754). 
 
 Installation
 ============
