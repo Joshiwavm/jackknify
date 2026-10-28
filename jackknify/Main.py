@@ -181,8 +181,7 @@ class Jack:
             print('.. Image')
             self.clean(self.vis_jacked)
                     
-            os.system('rm -vf *.last')
-            os.system('rm -vf *.log')
+            os.system('rm -f tclean.last exportfits.last')
 
             if i != samples-1:
                 clear_output(True)
