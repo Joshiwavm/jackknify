@@ -8,8 +8,6 @@ from .ImSettings import *
 from .MsManager import MSmanager
 from .Plot import SLP, IMAGE
 
-from . import JAXknife
-
 class Jack:
     def __init__(self, 
                  fname: str, 
@@ -189,6 +187,8 @@ class Jack:
     def gofast(self,
                samples: int = 1,
                seed: int = 42):
+        from . import JAXknife # optional: needs jax and jax-finufft (pip install jackknify[jax])
+
         print('.. Loading in MS')
         _, UVreal, UVimag, UVwgts, uw, vw, rows = self.manager.uvdata_loader()
         groups = self._flip_groups(rows)
