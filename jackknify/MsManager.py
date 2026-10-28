@@ -33,6 +33,8 @@ class MSmanager:
         uvwghts = np.empty(0)
         us = np.empty(0)
         vs = np.empty(0)
+        rows = np.empty(0, dtype=int) # ms row (baseline and time) of each visibility
+        nrows = 0
 
         
         for f, field in enumerate(self.fields):
@@ -72,8 +74,10 @@ class MSmanager:
                 uvwghts = np.append(uvwghts, uvwght)
                 us      = np.append(us, uwave) 
                 vs      = np.append(vs, vwave)
+                rows    = np.append(rows, np.tile(np.arange(len(u)), len(freqs)) + nrows)
+                nrows  += len(u)
     
-        return uvdist, UVreal, UVimag, uvwghts, us, vs
+        return uvdist, UVreal, UVimag, uvwghts, us, vs, rows
     
     def model_to_ms(self, model, sigma = None):
         

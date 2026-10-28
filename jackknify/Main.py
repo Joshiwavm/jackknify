@@ -20,12 +20,14 @@ class Jack:
                  array: str,
                  test: bool = False,
                  update_weights: bool = False,
+                 flip_per_channel: bool = False,
                  ):
         
         # initialize variables
         # --------------------
         self.test           = test 
         self.update_weights = update_weights
+        self.flip_per_channel = flip_per_channel # True: old behaviour (<= 0.3.0), one sign per channel
         self.band           = band
         self.array          = array
         self.seed           = 42
@@ -59,12 +61,19 @@ class Jack:
         return (self.vis_input.split('/')[-1]).split('.ms')[0] + '_Jacked_seed'+str(self.seed)+'.ms' 
         
     def _loader(self):
-        uvdist, UVreal, UVimag, UVwgts, _, _ = self.manager.uvdata_loader()
+        uvdist, UVreal, UVimag, UVwgts, _, _, rows = self.manager.uvdata_loader()
 
         self.UVreal = UVreal
         self.UVimag = UVimag
         self.uvdist = uvdist
         self.UVwgts = UVwgts
+        self.rows   = rows
+
+    def _flip_groups(self, rows):
+        # all channels of one baseline at one time stamp get the same sign,
+        # so correlations between channels (e.g. after uvcontsub) are kept
+        if self.flip_per_channel: return np.arange(len(rows))
+        else: return rows
         
     def _saver(self):
             
@@ -89,11 +98,14 @@ class Jack:
         self.wgt = 1/(np.nanstd(self.UVreal_binned))**2/ bin_frac
     
     def _jack_it(self):
-        indexing = np.ones_like(self.UVreal)
+        groups = self._flip_groups(self.rows)
+
+        indexing = np.ones(groups.max()+1)
         indexing[:len(indexing)//2] = 0
 
         np.random.seed(self.seed)
         np.random.shuffle(indexing)
+        indexing = indexing[groups]
 
         self.UVreal_jacked = np.copy(self.UVreal)
         self.UVreal_jacked[indexing.astype(bool)] *= -1.
@@ -179,7 +191,8 @@ class Jack:
                samples: int = 1,
                seed: int = 42):
         print('.. Loading in MS')
-        _, UVreal, UVimag, UVwgts, uw, vw = self.manager.uvdata_loader()
+        _, UVreal, UVimag, UVwgts, uw, vw, rows = self.manager.uvdata_loader()
+        groups = self._flip_groups(rows)
         
         rng = np.random.default_rng(seed=seed)
 
@@ -189,7 +202,7 @@ class Jack:
 
         print('.. Running JAXknife')
         for i in tqdm.tqdm(range(0,samples,1)):
-            img = JAXknife.run(xw,yw,UVreal+1j*UVimag,UVwgts,self.imcase.imsize,rng)
+            img = JAXknife.run(xw,yw,UVreal+1j*UVimag,UVwgts,self.imcase.imsize,rng,groups)
 
             os.system(f'mkdir -p {self.outdir}jaxknife/')
             outpath = self.vis_jacked.split('/')[-1]
