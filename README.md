@@ -1,11 +1,20 @@
-Jack-knife
-==========
+jackknify
+=========
+[![Documentation](https://img.shields.io/badge/docs-joshiwavm.github.io%2Fjackknify-2ea44f)](https://joshiwavm.github.io/jackknify/)
+[![PyPI](https://img.shields.io/pypi/v/jackknify)](https://pypi.org/project/jackknify/)
 [![DOI](https://zenodo.org/badge/593247898.svg)](https://zenodo.org/doi/10.5281/zenodo.12516584)
-[![Docs](https://img.shields.io/badge/docs-v1.0.0-2ea44f)](https://joshiwavm.github.io/jackknify/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+``jackknify`` is a Python package that jackknifes ALMA visibilities to create noise realizations from the observations.
 
-``jackknify``is a Python-based package that jackknifes ALMA visibilities to create noise realizations from the observations. 
+**Documentation and tutorials: [joshiwavm.github.io/jackknify](https://joshiwavm.github.io/jackknify/)**
+
+- [How to jackknife Measurement Sets](https://joshiwavm.github.io/jackknify/notebooks/HowToJackknife.html)
+- [How to use jackknify for line finding](https://joshiwavm.github.io/jackknify/notebooks/HowToLineFind.html)
+- [How to visualize jackknifed Measurement Sets](https://joshiwavm.github.io/jackknify/notebooks/HowToVisualize.html)
+- [Installation help](https://joshiwavm.github.io/jackknify/install.html)
+
+The notebooks behind these tutorials are in [docs/notebooks](https://github.com/Joshiwavm/jackknify/tree/main/docs/notebooks).
 
 Methodology
 ==========
@@ -36,7 +45,7 @@ or from the source
     pip install -e .
 
 
-## Dependancies
+## Dependencies
 
 ``jackknify`` uses ``casatask`` and ``casatools`` to interface with CASA measurements. ``casatask`` and ``casatools`` requires ``casadata`` to load. Sadly, this is a  ~350 MB sized file making the installment a bit slow. Further, when performing line searches, we make use of the package ``interferopy``, which is a Python-based package for common tasks used in the observational radio/mm interferometry data analysis.
 
@@ -51,9 +60,3 @@ Further, `casadata` will download and store examples sets into the folder:  ~/.c
     mkdir ~/.casa/data
 
 To make the folder. That should solve most problems. 
-
-
-Documentation
-============
-
-For your convenience, there are notebooks on how to run and use ``jackknify`` for line inference. You can find them in the docs/notebooks folder. Also, check out the documentation [here](https://joshiwavm.github.io/jackknify/).

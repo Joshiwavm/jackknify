@@ -26,5 +26,6 @@ dependencies = ["casatools","casatasks","casadata","interferopy","numpy","scipy"
 jax = ["jax","jax-finufft"]
 
 [project.urls]
+Documentation = "https://joshiwavm.github.io/jackknify/"
 Homepage = "https://github.com/Joshiwavm/jackknify"
 Issues = "https://github.com/Joshiwavm/jackknify/issues"
