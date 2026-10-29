@@ -21,6 +21,10 @@ Installation
 
     pip install jackknify
     
+To also use the fast JAX imaging (``Jack.gofast``), install the optional dependencies with
+
+    pip install "jackknify[jax]"
+
 or alternatively
 
     python -m pip install git+https://github.com/Joshiwavm/jackknify
